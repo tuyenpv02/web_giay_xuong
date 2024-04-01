@@ -11,7 +11,6 @@ import {
     Col,
     DatePicker,
     Input,
-    InputNumber,
     Row,
     Select,
     Space,
@@ -44,10 +43,11 @@ function HoaDonPage() {
     }, []);
 
     useEffect(() => {
-        let filterHoaDon = async ()=>{
+        let filterHoaDon = async () => {
             let res = await HoaDonService.filter(filter);
             console.log(res);
-        }
+            setData([...res]);
+        };
         filterHoaDon();
     }, [filter]);
 
@@ -150,10 +150,18 @@ function HoaDonPage() {
                             <DatePicker.RangePicker
                                 placeholder={["ngày bắt đầu", "ngày kết thúc"]}
                                 name="ngayTim"
-                                // defaultValue={[
-                                //     moment(filter?.ngayBatDau, "YYYY-MM-DD"),
-                                //     moment(filter.ngayKetThuc, "YYYY-MM-DD"),
+                                // value={[
+                                //     moment(filter.ngayBatDau, "yyyy-MM-DD"),
+                                //     moment(filter.ngayKetThuc, "yyyy-MM-DD"),
                                 // ]}
+                                value={
+                                    filter.ngayBatDau && filter.ngayKetThuc
+                                        ? [
+                                              moment(filter.ngayBatDau, "yyyy-MM-DD"),
+                                              moment(filter.ngayKetThuc, "yyyy-MM-DD"),
+                                          ]
+                                        : null
+                                }
                                 onChange={(date, dateString) => {
                                     console.log(date, dateString);
                                     setFilter({
@@ -181,7 +189,7 @@ function HoaDonPage() {
                             >
                                 <Option value={""}>Tất cả</Option>
                                 <Option value={"1"}>Tại quầy</Option>
-                                <Option value={"2"}>Trực tuyến</Option>
+                                <Option value={"0"}>Trực tuyến</Option>
                             </Select>
                         </Col>
 
@@ -206,7 +214,20 @@ function HoaDonPage() {
                         </Col>
                         <Col span={4}>
                             <Space className="d-flex align-items-center  justify-content-center  ">
-                                <Button type="primary">Làm mới</Button>
+                                <Button
+                                    type="primary"
+                                    onClick={() => {
+                                        setFilter({
+                                            searchText: "",
+                                            ngayBatDau: "",
+                                            ngayKetThuc: "",
+                                            loaiHoaDon: "",
+                                            trangThai: "",
+                                        });
+                                    }}
+                                >
+                                    Làm mới
+                                </Button>
                                 <Button
                                     type="primary"
                                     onClick={() => {
