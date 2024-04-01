@@ -17,7 +17,8 @@ class HoaDonService {
                 loaiHoaDon,
                 ngayBatDau,
                 ngayKetThuc,
-            },
+            }, 
+            
         });
         return res.data;
     };
