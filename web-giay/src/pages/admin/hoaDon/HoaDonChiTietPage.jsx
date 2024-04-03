@@ -187,7 +187,9 @@ const HoaDonChiTietPage = () => {
             dataIndex: "trangThai",
             key: "id",
             render: (text) => (
-                <Typography.Text size={"large"}>{formatTrangThaiHD(text)}</Typography.Text>
+                <Typography.Text size={"large"} strong>
+                    {formatTrangThaiHD(text)}
+                </Typography.Text>
             ),
         },
         {
@@ -200,13 +202,13 @@ const HoaDonChiTietPage = () => {
             title: "nhân viên",
             dataIndex: "nguoiTao",
             key: "id",
-            render: (text, record) => <Typography.Text strong>{text}</Typography.Text>,
+            render: (text, record) => <Typography.Text>{text}</Typography.Text>,
         },
         {
             title: "ghi chú",
             dataIndex: "ghiChu",
             key: "id",
-            render: (text, record) => <Typography.Text strong>{text}</Typography.Text>,
+            render: (text, record) => <Typography.Text>{text}</Typography.Text>,
         },
     ];
     return (
@@ -272,7 +274,13 @@ const HoaDonChiTietPage = () => {
                                         {(hoaDon?.trangThai == 1 ||
                                             hoaDon?.trangThai == 2 ||
                                             hoaDon?.trangThai == 3) && (
-                                            <Button type="primary" danger>
+                                            <Button
+                                                onClick={() => {
+                                                    showModalXacThuc(0);
+                                                }}
+                                                type="primary"
+                                                danger
+                                            >
                                                 Hủy đơn
                                             </Button>
                                         )}
@@ -423,11 +431,7 @@ const HoaDonChiTietPage = () => {
             {/* //Modal  */}
             {/* modal lshd */}
             <Modal width={1000} open={isModalOpen} onCancel={handleCancel} footer={false}>
-                <Table
-                    pagination={{ pageSize: 10 }}
-                    columns={columnsLSHD}
-                    dataSource={lichSuHoaDon}
-                />
+                <Table pagination={false} columns={columnsLSHD} dataSource={lichSuHoaDon} />
             </Modal>
 
             {/* modal xác thực hóa đơn */}

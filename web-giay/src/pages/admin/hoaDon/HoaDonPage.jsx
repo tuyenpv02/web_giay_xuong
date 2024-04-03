@@ -22,6 +22,7 @@ import HoaDonService from "../../../services/HoaDonService";
 import { formatPrice } from "../../../utils/formatNumber";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { formatTrangThaiHD } from "../../../utils/formatTrangThaiHD";
 
 function HoaDonPage() {
     const navigate = useNavigate();
@@ -97,7 +98,7 @@ function HoaDonPage() {
             dataIndex: "trangThai",
             render: (trangThai, record) => {
                 const color = trangThai ? "green" : "blue";
-                return <Tag color={color}>{trangThai}</Tag>;
+                return <Tag color={color}>{formatTrangThaiHD(trangThai)}</Tag>;
             },
         },
         {
@@ -201,13 +202,13 @@ function HoaDonPage() {
                                 onChange={(e) => setFilter({ ...filter, trangThai: e })}
                             >
                                 <Option value={""}>tất cả</Option>
-                                <Option value={"1"}>hủy</Option>
+                                <Option value={"0"}>hủy</Option>
+                                {/* <Option value={"1"}>hủy</Option> */}
                                 <Option value={"2"}>chờ xác nhận</Option>
                                 <Option value={"3"}>chờ vận chuyển</Option>
-                                <Option value={"4"}>đang vận chuyển</Option>
-                                <Option value={"5"}>đã giao hàng</Option>
-                                <Option value={"6"}>đã thanh toán</Option>
-                                <Option value={"7"}>hoàn thành</Option>
+                                <Option value={"4"}>đang giao hàng</Option>
+                                <Option value={"5"}>đã thanh toán</Option>
+                                <Option value={"6"}>hoàn thành</Option>
                             </Select>
                         </Col>
                         <Col span={4}>
