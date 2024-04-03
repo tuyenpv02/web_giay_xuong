@@ -1,6 +1,4 @@
 import {
-    EyeFilled,
-    EyeOutlined,
     FilterFilled,
     PlusSquareOutlined,
     SearchOutlined,
@@ -23,8 +21,10 @@ import { useEffect, useState } from "react";
 import HoaDonService from "../../../services/HoaDonService";
 import { formatPrice } from "../../../utils/formatNumber";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 function HoaDonPage() {
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState({
         searchText: "",
@@ -45,7 +45,7 @@ function HoaDonPage() {
     useEffect(() => {
         let filterHoaDon = async () => {
             let res = await HoaDonService.filter(filter);
-            console.log(res);
+            // console.log(res);
             setData([...res]);
         };
         filterHoaDon();
@@ -69,7 +69,7 @@ function HoaDonPage() {
         {
             title: "Nhân viên",
             dataIndex: "nguoiTao",
-            render: (nguoiTao, record) => {
+            render: (nguoiTao) => {
                 const color = nguoiTao ? "green" : "geekblue";
                 return <Tag color={color}>{nguoiTao ? nguoiTao : "System"}</Tag>;
             },
@@ -82,7 +82,7 @@ function HoaDonPage() {
         {
             title: "Loại đơn hàng",
             dataIndex: "loaiHoaDon",
-            render: (loaiHoaDon, record) => {
+            render: (loaiHoaDon) => {
                 const color = loaiHoaDon ? "green" : "blue";
                 return <Tag color={color}>{loaiHoaDon ? "Tại quầy" : "Trực tuyến"}</Tag>;
             },
@@ -104,7 +104,9 @@ function HoaDonPage() {
             title: "Action",
             render: (_, record) => (
                 <>
-                    <Button type="text" className="t">
+                    <Button type="text" onClick={()=>{
+                        navigate('hoa-don-chi-tiet/'+record.id)
+                    }}>
                         <i className="fa-solid fa-eye "></i>
                     </Button>
                 </>
@@ -150,10 +152,6 @@ function HoaDonPage() {
                             <DatePicker.RangePicker
                                 placeholder={["ngày bắt đầu", "ngày kết thúc"]}
                                 name="ngayTim"
-                                // value={[
-                                //     moment(filter.ngayBatDau, "yyyy-MM-DD"),
-                                //     moment(filter.ngayKetThuc, "yyyy-MM-DD"),
-                                // ]}
                                 value={
                                     filter.ngayBatDau && filter.ngayKetThuc
                                         ? [
@@ -163,7 +161,7 @@ function HoaDonPage() {
                                         : null
                                 }
                                 onChange={(date, dateString) => {
-                                    console.log(date, dateString);
+                                    // console.log(date, dateString);
                                     setFilter({
                                         ...filter,
                                         ngayBatDau: dateString[0],
@@ -247,8 +245,8 @@ function HoaDonPage() {
                         </Typography.Title>
                     }
                     extra={
-                        <Button type="primary" icon={<PlusSquareOutlined />}>
-                            {" "}
+                        <Button type="primary" icon={<PlusSquareOutlined />} onClick={()=> navigate('/admin/ban-hang')}>
+                             
                             Tạo hóa đơn
                         </Button>
                     }

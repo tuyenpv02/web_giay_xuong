@@ -8,8 +8,6 @@ class HoaDonChiTietService {
                 idHoaDon,
             },
         });
-        console.log(idHoaDon);
-        console.log('hdct dđ', res.data);
         return res.data;
     };
 

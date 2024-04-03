@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class LichSuHoaDon {
 
     @ManyToOne
     @JoinColumn(name = "idHoaDon", referencedColumnName = "id")
+//    @JsonIgnore
     private HoaDon hoaDon;
 
     private String ghiChu;

@@ -1,6 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import "./App.css";
- 
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LayoutKhachHang from "./layouts/layoutKhachHang/LayoutKhachHang";
 import LayoutAdmin from "./layouts/layoutAdmin/LayoutAdmin";
@@ -22,6 +22,7 @@ import {
 } from "./pages/admin";
 import NhanVienAdd from "./pages/admin/taiKhoan/nhanVien/NhanVienAdd";
 import NhanVienEdit from "./pages/admin/taiKhoan/nhanVien/NhanVienEdit";
+import HoaDonChiTietPage from "./pages/admin/hoaDon/HoaDonChiTietPage";
 
 function App() {
     return (
@@ -37,7 +38,12 @@ function App() {
                     <Route path="/admin" element={<LayoutAdmin />}>
                         <Route index path="*" element={<DashboardPage />}></Route>
                         <Route path="ban-hang" element={<BanHangPage />}></Route>
+
                         <Route path="hoa-don" element={<HoaDonPage />}></Route>
+                        <Route
+                            path="hoa-don/hoa-don-chi-tiet/:id"
+                            element={<HoaDonChiTietPage />}
+                        ></Route>
 
                         <Route path="san-pham" element={<SanPhamPage />}></Route>
                         <Route path="chat-lieu" element={<ChatLieuPage />} />
@@ -46,14 +52,12 @@ function App() {
                         <Route path="thuong-hieu" element={<ThuongHieuPage />} />
                         <Route path="mau-sac" element={<MauSacPage />} />
 
-                        <Route path="nhan-vien" element={<NhanVienPage />} ></Route>
-                        <Route path="nhan-vien/add" element={<NhanVienAdd />} ></Route>
-                        <Route path="nhan-vien/edit/:id" element={<NhanVienEdit />} ></Route>
-
+                        <Route path="nhan-vien" element={<NhanVienPage />}></Route>
+                        <Route path="nhan-vien/add" element={<NhanVienAdd />}></Route>
+                        <Route path="nhan-vien/edit/:id" element={<NhanVienEdit />}></Route>
 
                         <Route path="khach-hang" element={<KhachHangPage />}></Route>
-                        
-                        
+
                         <Route path="giam-gia" element={<GiamGiaPage />}></Route>
                     </Route>
                 </Routes>

@@ -51,7 +51,7 @@ function NhanVienEdit() {
     useEffect(() => {
         let getNhanVienById = async () => {
             let res = await nhanVienService.getById(params.id);
-            console.log(res);
+            // console.log(res);
             form.setFieldValue("ten", res.ten);
             form.setFieldValue("email", res.email);
             form.setFieldValue("sdt", res.sdt);
@@ -133,14 +133,14 @@ function NhanVienEdit() {
                             toast.success("Cập nhật thành công");
                         })
                         .catch((err) => {
-                            toast.warning("Thất bại ");
-                            console.log(err);
+                            toast.warning("Thất bại "+err);
+                            // console.log(err);
                         });
                     navigate("/admin/nhan-vien");
             })
             .catch((err) => {
-                toast.warning("Cập nhật thất bại ");
-                console.log(err);
+                toast.warning("Cập nhật thất bại "+err);
+                // console.log(err);
             });
     };
 

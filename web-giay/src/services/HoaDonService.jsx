@@ -18,14 +18,24 @@ class HoaDonService {
                 ngayBatDau,
                 ngayKetThuc,
             }, 
-            
+
         });
         return res.data;
     };
 
+    // update
+    static update(id, hoaDon, trangThai) {
+        const data = {
+            ...hoaDon,
+            trangThai: trangThai
+        }
+        // console.log('data', data);
+        return request.put("hoa-don/" + id, data);
+    }
+
     // detail by id
     static getById = async (id) => {
-        let res = await request.get(id);
+        let res = await request.get('hoa-don/'+id);
         return res.data;
     };
 }

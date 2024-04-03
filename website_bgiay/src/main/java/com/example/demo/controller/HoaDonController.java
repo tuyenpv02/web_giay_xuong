@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.HoaDon;
+import com.example.demo.entity.KichCo;
 import com.example.demo.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,5 +44,16 @@ public class HoaDonController {
             );
         }
         return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id
+            , @RequestBody HoaDon hoaDon) {
+        if (!service.existsById(id)) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Không tìm thấy"
+            );
+        }
+        return ResponseEntity.ok(service.update(id, hoaDon));
     }
 }

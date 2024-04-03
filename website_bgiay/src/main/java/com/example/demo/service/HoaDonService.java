@@ -27,18 +27,11 @@ public class HoaDonService {
 
     public List<HoaDon> filter(String searchText, String trangThai
             , String loaiHoaDon, String ngayBatDau, String ngayKetThuc) {
-//        System.out.println(searchText);
-//        System.out.println(loaiHoaDon.trim().length());
-//        System.out.println(trangThai.trim().length());
-//        System.out.println(ngayBatDau);
-//        System.out.println(ngayKetThuc);
-
 
         Specification<ChiTietSanPham> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             Predicate likeTen = criteriaBuilder.like(root.get("ma"), "%" + searchText + "%");
-//            predicates.add(likeTen);
             Predicate likeNguoiTao = criteriaBuilder.like(root.get("hoTen"), "%" + searchText + "%");
             predicates.add(criteriaBuilder.or(likeNguoiTao,likeTen));
 
@@ -67,12 +60,28 @@ public class HoaDonService {
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-//            return criteriaBuilder.and( criteriaBuilder.or(likeTen, likeNguoiTao));
         };
         return repository.findAll(specification);
 //        return repository.filter(searchText, loaiHoaDon, trangThai, ngayBatDau, ngayKetThuc);
     }
 
+
+    public HoaDon update(Long id, HoaDon newHoaDon) {
+        Optional<HoaDon> optional = repository.findById(id);
+        return optional.map(o -> {
+            o.setTaiKhoan(newHoaDon.getTaiKhoan());
+            o.setHoTen(newHoaDon.getHoTen());
+            o.setEmail(newHoaDon.getEmail());
+            o.setSdt(newHoaDon.getSdt());
+            o.setDiaChi(newHoaDon.getDiaChi());
+            o.setHoTen(newHoaDon.getHoTen());
+
+            o.setNguoiCapNhat(newHoaDon.getNguoiCapNhat());
+            o.setNgayCapNhat(newHoaDon.getNgayCapNhat());
+            o.setTrangThai(newHoaDon.getTrangThai());
+            return repository.save(o);
+        }).orElse(null);
+    }
 
     public HoaDon findById(Long id) {
         Optional<HoaDon> optional = repository.findById(id);
