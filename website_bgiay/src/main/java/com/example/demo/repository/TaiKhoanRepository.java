@@ -26,7 +26,7 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, Long>
             "            CONCAT(t.ten,t.email)  like concat('%', :text, '%') \t \n" +
             "        ) order by t.id desc \n"
             , nativeQuery = true)
-    List<TaiKhoan> filter(@Param("text") String text, @Param("trangThai") String trangThai);
+    List<TaiKhoan> filterNhanVien(@Param("text") String text, @Param("trangThai") String trangThai);
 
     @Query(value = "select * from tai_khoan t where t.vaiTro = 1 order by t.id desc", nativeQuery = true)
     List<TaiKhoan> findAllNhanVien();

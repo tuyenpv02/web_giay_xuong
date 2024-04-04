@@ -67,6 +67,7 @@ function NhanVienAdd() {
         };
         district && fetchWard();
     }, [district]);
+    
     const submitForm = (data) => {
         const diaChi = {
             idTaiKhoan: null,

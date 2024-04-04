@@ -17,8 +17,8 @@ public class TaiKhoanService {
     @Autowired
     private TaiKhoanRepository repository;
 
-    public List<TaiKhoan> filter(String searchText, String trangThai) {
-        return repository.filter(searchText, trangThai);
+    public List<TaiKhoan> filterNhanVien(String searchText, String trangThai) {
+        return repository.filterNhanVien(searchText, trangThai);
     }
 
 

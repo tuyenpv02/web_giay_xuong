@@ -17,9 +17,12 @@ function formatTrangThaiHD(value) {
             trangThai = "đang giao hàng";
             break;
         case 5:
-            trangThai = "đã thanh toán";
+            trangThai = "đã giao hàng";
             break;
         case 6:
+            trangThai = "đã thanh toán";
+            break;
+        case 7:
             trangThai = "hoàn thành";
             break;
         default:

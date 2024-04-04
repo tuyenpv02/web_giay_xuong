@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, Long>, JpaSpecificationExecutor {
 
+    @Query(value = "select * from hoa_don hd \n" +
+            "order by hd.id desc ", nativeQuery = true)
     List<HoaDon> findAllByOrderByIdDesc();
 
     Boolean existsByMa(String ma);

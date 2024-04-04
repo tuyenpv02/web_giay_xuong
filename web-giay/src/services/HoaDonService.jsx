@@ -17,8 +17,7 @@ class HoaDonService {
                 loaiHoaDon,
                 ngayBatDau,
                 ngayKetThuc,
-            }, 
-
+            },
         });
         return res.data;
     };
@@ -27,15 +26,24 @@ class HoaDonService {
     static update(id, hoaDon, trangThai) {
         const data = {
             ...hoaDon,
-            trangThai: trangThai
-        }
+            trangThai: trangThai,
+        };
         // console.log('data', data);
+        return request.put("hoa-don/" + id, data);
+    }
+
+    // update
+    static updateHoaDon(id, hoaDon) {
+        const data = {
+            ...hoaDon,
+        };
+        console.log('data', data, id);
         return request.put("hoa-don/" + id, data);
     }
 
     // detail by id
     static getById = async (id) => {
-        let res = await request.get('hoa-don/'+id);
+        let res = await request.get("hoa-don/" + id);
         return res.data;
     };
 }

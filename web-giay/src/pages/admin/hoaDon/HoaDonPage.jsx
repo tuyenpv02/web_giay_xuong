@@ -1,8 +1,4 @@
-import {
-    FilterFilled,
-    PlusSquareOutlined,
-    SearchOutlined,
-} from "@ant-design/icons";
+import { FilterFilled, PlusSquareOutlined, SearchOutlined } from "@ant-design/icons";
 import {
     Button,
     Card,
@@ -46,7 +42,6 @@ function HoaDonPage() {
     useEffect(() => {
         let filterHoaDon = async () => {
             let res = await HoaDonService.filter(filter);
-            // console.log(res);
             setData([...res]);
         };
         filterHoaDon();
@@ -55,6 +50,7 @@ function HoaDonPage() {
     const columns = [
         {
             title: "#",
+            dataIndex: "ma",
             render: (_, record, index) => <a>{index + 1}</a>,
         },
         {
@@ -63,22 +59,24 @@ function HoaDonPage() {
             render: (text) => <b>{text}</b>,
         },
         {
+            title: "Nhân viên",
+            dataIndex: "nguoiTao",
+            render: (text) => <a>{text}</a>,
+        },
+        {
             title: "Khách hàng",
             dataIndex: "hoTen",
             render: (text) => <a>{text}</a>,
         },
         {
-            title: "Nhân viên",
-            dataIndex: "nguoiTao",
-            render: (nguoiTao) => {
-                const color = nguoiTao ? "green" : "geekblue";
-                return <Tag color={color}>{nguoiTao ? nguoiTao : "System"}</Tag>;
-            },
+            title: "Số điện thoại",
+            dataIndex: "sdt",
+            render: (text) => <a>{text}</a>,
         },
         {
-            title: "Ngày tạo",
-            dataIndex: "ngayTao",
-            render: (text) => <a>{text}</a>,
+            title: "Tổng tiền",
+            dataIndex: "tongTien",
+            render: (text) => formatPrice(text),
         },
         {
             title: "Loại đơn hàng",
@@ -89,10 +87,11 @@ function HoaDonPage() {
             },
         },
         {
-            title: "Tổng tiền",
-            dataIndex: "tongTien",
-            render: (text) => formatPrice(text),
+            title: "Ngày tạo",
+            dataIndex: "ngayTao",
+            render: (text) => <a>{text}</a>,
         },
+
         {
             title: "Trạng thái",
             dataIndex: "trangThai",
@@ -105,9 +104,12 @@ function HoaDonPage() {
             title: "Action",
             render: (_, record) => (
                 <>
-                    <Button type="text" onClick={()=>{
-                        navigate('hoa-don-chi-tiet/'+record.id)
-                    }}>
+                    <Button
+                        type="text"
+                        onClick={() => {
+                            navigate("hoa-don-chi-tiet/" + record.id);
+                        }}
+                    >
                         <i className="fa-solid fa-eye "></i>
                     </Button>
                 </>
@@ -149,7 +151,6 @@ function HoaDonPage() {
                         </Col>
 
                         <Col span={8}>
-                            {" "}
                             <DatePicker.RangePicker
                                 placeholder={["ngày bắt đầu", "ngày kết thúc"]}
                                 name="ngayTim"
@@ -162,7 +163,6 @@ function HoaDonPage() {
                                         : null
                                 }
                                 onChange={(date, dateString) => {
-                                    // console.log(date, dateString);
                                     setFilter({
                                         ...filter,
                                         ngayBatDau: dateString[0],
@@ -180,15 +180,15 @@ function HoaDonPage() {
                         <Col span={8}>
                             <label className="form-label me-1 ">loại : </label>
                             <Select
-                                className=" w-50"
+                                className=" w-75 "
                                 placeholder="loại hóa đơn"
                                 name="loaiHoaDon"
                                 value={filter.loaiHoaDon}
                                 onChange={(e) => setFilter({ ...filter, loaiHoaDon: e })}
                             >
-                                <Option value={""}>Tất cả</Option>
-                                <Option value={"1"}>Tại quầy</Option>
-                                <Option value={"0"}>Trực tuyến</Option>
+                                <Select.Option value={""}>Tất cả</Select.Option>
+                                <Select.Option value={"1"}>Tại quầy</Select.Option>
+                                <Select.Option value={"0"}>Trực tuyến</Select.Option>
                             </Select>
                         </Col>
 
@@ -201,14 +201,14 @@ function HoaDonPage() {
                                 value={filter.trangThai}
                                 onChange={(e) => setFilter({ ...filter, trangThai: e })}
                             >
-                                <Option value={""}>tất cả</Option>
+                                <Select.Option value={""}>tất cả</Select.Option>
                                 <Option value={"0"}>hủy</Option>
                                 {/* <Option value={"1"}>hủy</Option> */}
-                                <Option value={"2"}>chờ xác nhận</Option>
-                                <Option value={"3"}>chờ vận chuyển</Option>
-                                <Option value={"4"}>đang giao hàng</Option>
-                                <Option value={"5"}>đã thanh toán</Option>
-                                <Option value={"6"}>hoàn thành</Option>
+                                <Select.Option value={"2"}>chờ xác nhận</Select.Option>
+                                <Select.Option value={"3"}>chờ vận chuyển</Select.Option>
+                                <Select.Option value={"4"}>đang giao hàng</Select.Option>
+                                <Select.Option value={"5"}>đã thanh toán</Select.Option>
+                                <Select.Option value={"6"}>hoàn thành</Select.Option>
                             </Select>
                         </Col>
                         <Col span={4}>
@@ -246,16 +246,19 @@ function HoaDonPage() {
                         </Typography.Title>
                     }
                     extra={
-                        <Button type="primary" icon={<PlusSquareOutlined />} onClick={()=> navigate('/admin/ban-hang')}>
-                             
+                        <Button
+                            type="primary"
+                            icon={<PlusSquareOutlined />}
+                            onClick={() => navigate("/admin/ban-hang")}
+                        >
                             Tạo hóa đơn
                         </Button>
                     }
                     size="small"
                 >
                     <Table
-                        columns={columns}
                         dataSource={data}
+                        columns={columns}
                         key={"id"}
                         pagination={{
                             position: ["bottomCenter"],

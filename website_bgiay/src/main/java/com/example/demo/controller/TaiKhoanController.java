@@ -19,7 +19,7 @@ public class TaiKhoanController {
             @RequestParam("searchText") String searchText,
             @RequestParam("trangThai") String trangThai
     ) {
-        return ResponseEntity.ok(service.filter(searchText.trim(), trangThai.trim()));
+        return ResponseEntity.ok(service.filterNhanVien(searchText.trim(), trangThai.trim()));
     }
 
 

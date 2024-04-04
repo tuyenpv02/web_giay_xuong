@@ -33,7 +33,9 @@ public class HoaDonService {
 
             Predicate likeTen = criteriaBuilder.like(root.get("ma"), "%" + searchText + "%");
             Predicate likeNguoiTao = criteriaBuilder.like(root.get("hoTen"), "%" + searchText + "%");
-            predicates.add(criteriaBuilder.or(likeNguoiTao,likeTen));
+            Predicate likeEmail = criteriaBuilder.like(root.get("email"), "%" + searchText + "%");
+            Predicate likeSdt = criteriaBuilder.like(root.get("sdt"), "%" + searchText + "%");
+            predicates.add(criteriaBuilder.or(likeNguoiTao,likeTen,likeEmail,likeSdt));
 
             if (trangThai.trim().length() != 0) {
                 Predicate specTrangThai = criteriaBuilder.equal(root.get("trangThai"), trangThai);
@@ -58,6 +60,9 @@ public class HoaDonService {
                     e.printStackTrace();
                 }
             }
+
+            // Sắp xếp theo id (ASC)
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

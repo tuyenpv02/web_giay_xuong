@@ -5,6 +5,7 @@ import {
     Col,
     Divider,
     Flex,
+    Form,
     Input,
     InputNumber,
     Modal,
@@ -26,6 +27,9 @@ import PhuongThucThanhToanService from "./../../../services/PhuongThucThanhToanS
 import StepHoaDonChiTiet from "./StepHoaDonChiTiet";
 import LichSuThanhToanHDCT from "./LichSuThanhToanHDCT";
 import getDateNow from "../../../utils/GetDateNow";
+import { toast } from "react-toastify";
+import ModalSuaThongTin from "./ModalSuaThongTin";
+import ThongTinHDCT from "./ThongTinHDCT";
 
 const HoaDonChiTietPage = () => {
     const params = useParams();
@@ -44,6 +48,10 @@ const HoaDonChiTietPage = () => {
     });
     const [lichSuThanhToan, setLichSuThanhToan] = useState([]);
 
+    const taoLSHD = async () => {
+        let resLSHD = await LichSuHoaDonService.add(lichSuHD);
+    };
+
     // modal
     // Open Modal lịch sử hóa đơn
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,17 +62,23 @@ const HoaDonChiTietPage = () => {
         setIsModalOpen(false);
     };
 
-    // Open Modal xác thực, ghi chú
+    // Open Modal xác thực trạng thái hóa đơn, ghi chú
     const [modalXacThuc, setModalXacThuc] = useState(false);
     const showModalXacThuc = (trangThaiXacThuc) => {
-        setLichSuHD({ ...lichSuHD, hoaDon: { id: hoaDon?.id }, trangThai: trangThaiXacThuc });
+        setLichSuHD({
+            ...lichSuHD,
+            hoaDon: { id: hoaDon?.id },
+            hanhDong: 1,
+            trangThai: trangThaiXacThuc,
+            nguoiTao: "anph779",
+        });
         setModalXacThuc(true);
     };
+
     const handleOKXacThuc = () => {
         let XacThucHD = async () => {
             let resHD = await HoaDonService.update(hoaDon.id, hoaDon, lichSuHD.trangThai);
-            // setHoaDon({ ...resHD });
-            let resLSHD = await LichSuHoaDonService.add(lichSuHD);
+            await taoLSHD();
 
             getHDById();
             getLSHDById();
@@ -72,12 +86,12 @@ const HoaDonChiTietPage = () => {
         };
         XacThucHD();
         handleCancelXacThuc();
+        toast.success("Xác nhận thành công");
     };
     const handleCancelXacThuc = () => {
         setLichSuHD({ ...lichSuHD, ghiChu: "" });
         setModalXacThuc(false);
     };
-    //
 
     // hoa don
     let getHDById = async () => {
@@ -118,8 +132,7 @@ const HoaDonChiTietPage = () => {
     const columnsSanPham = [
         {
             title: "#",
-            dataIndex: "chiTietSanPham",
-            key: "id",
+            // dataIndex: "chiTietSanPham",
             render: (text, record, index) => (
                 <>
                     <Typography.Text size={"large"}>{index + 1}</Typography.Text>
@@ -129,13 +142,20 @@ const HoaDonChiTietPage = () => {
         {
             title: "sản phẩm",
             dataIndex: "chiTietSanPham",
-            key: "id",
             render: (text, record) => (
                 <>
                     <Flex vertical>
-                        <Typography.Text strong>{record.chiTietSanPham.ten}</Typography.Text>
+                        <Typography.Text strong>
+                            {record.chiTietSanPham.ma} - {record.chiTietSanPham.ten}
+                        </Typography.Text>
                         <Typography.Text type="danger">
                             {formatPrice(record.donGia)}
+                        </Typography.Text>
+                        <Typography.Text>
+                            màu sắc: {record.chiTietSanPham.mauSac.ten}
+                        </Typography.Text>
+                        <Typography.Text>
+                            kích cỡ: {record.chiTietSanPham.kichCo.ten}
                         </Typography.Text>
                     </Flex>
                 </>
@@ -144,14 +164,11 @@ const HoaDonChiTietPage = () => {
         {
             title: "số lượng",
             dataIndex: "soLuong",
-            key: "id",
-
             render: (text, record) => <InputNumber value={record.soLuong} />,
         },
         {
             title: "đơn giá",
             dataIndex: "donGia",
-            key: "id",
             render: (text, record) => (
                 <>
                     <Typography.Text strong>
@@ -162,7 +179,6 @@ const HoaDonChiTietPage = () => {
         },
         {
             title: "Thao tác",
-            key: "id",
             render: (text, record) => (
                 <>
                     <Button type="primary">Xóa</Button>
@@ -175,7 +191,6 @@ const HoaDonChiTietPage = () => {
         {
             title: "#",
             dataIndex: "trangThai",
-            key: "id",
             render: (text, record, index) => (
                 <>
                     <Typography.Text size={"large"}>{index + 1}</Typography.Text>
@@ -185,7 +200,6 @@ const HoaDonChiTietPage = () => {
         {
             title: "trạng thái",
             dataIndex: "trangThai",
-            key: "id",
             render: (text) => (
                 <Typography.Text size={"large"} strong>
                     {formatTrangThaiHD(text)}
@@ -195,19 +209,16 @@ const HoaDonChiTietPage = () => {
         {
             title: "ngày tạo",
             dataIndex: "ngayTao",
-            key: "id",
             render: (text, record) => <Typography.Text size={"large"}>{text}</Typography.Text>,
         },
         {
             title: "nhân viên",
             dataIndex: "nguoiTao",
-            key: "id",
             render: (text, record) => <Typography.Text>{text}</Typography.Text>,
         },
         {
             title: "ghi chú",
             dataIndex: "ghiChu",
-            key: "id",
             render: (text, record) => <Typography.Text>{text}</Typography.Text>,
         },
     ];
@@ -257,13 +268,23 @@ const HoaDonChiTietPage = () => {
                                                 }}
                                                 type="primary"
                                             >
-                                                Thanh toán
+                                                Đã giao hàng
                                             </Button>
                                         )}
                                         {hoaDon?.trangThai == 5 && (
                                             <Button
                                                 onClick={() => {
                                                     showModalXacThuc(6);
+                                                }}
+                                                type="primary"
+                                            >
+                                                Thanh toán
+                                            </Button>
+                                        )}
+                                        {hoaDon?.trangThai == 6 && (
+                                            <Button
+                                                onClick={() => {
+                                                    showModalXacThuc(7);
                                                 }}
                                                 type="primary"
                                             >
@@ -288,7 +309,7 @@ const HoaDonChiTietPage = () => {
                                 </Col>
                                 <Col span={12}>
                                     <Flex justify="end" align="center" gap={5}>
-                                        <Button type="primary">In hóa đơn</Button>
+                                        {/* <Button type="primary">In hóa đơn</Button> */}
                                         <Button
                                             onClick={() => {
                                                 showModalAdd();
@@ -310,113 +331,34 @@ const HoaDonChiTietPage = () => {
                             Thông tin đơn hàng - {hoaDon?.ma}
                         </Typography.Title>
                     }
+                    extra={
+                        <ModalSuaThongTin
+                            diaChi={hoaDon?.diaChi}
+                            hoTen={hoaDon?.hoTen}
+                            sdt={hoaDon?.sdt}
+                            hoaDon={hoaDon}
+                        />
+                    }
                     size="small"
                 >
-                    <Row gutter={[10, 10]}>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong htmlFor="">
-                                        Trạng thái:
-                                    </Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Tag color="blue">{formatTrangThaiHD(hoaDon?.trangThai)} </Tag>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Tên khách hàng:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Typography.Text>
-                                        {hoaDon?.hoTen ? hoaDon?.hoTen : "Khách lẻ"}
-                                    </Typography.Text>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Loại:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Tag color="purple">
-                                        {hoaDon?.loaiHoaDon ? "tại quầy" : "trực tuyến"}
-                                    </Tag>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Số điện thoại:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Typography.Text>{hoaDon?.sdt} </Typography.Text>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Tổng tiền:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Typography.Text>
-                                        {formatPrice(hoaDon?.tongTien)}{" "}
-                                    </Typography.Text>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Phí vận chuyển:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Typography.Text>
-                                        {formatPrice(hoaDon?.tienShip)}{" "}
-                                    </Typography.Text>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Địa chỉ:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Typography.Text>
-                                        {hoaDon?.diaChi ? hoaDon?.diaChi : "Không có"}{" "}
-                                    </Typography.Text>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col span={12}>
-                            <Row>
-                                <Col span={12}>
-                                    <Typography.Text strong>Ghi chú:</Typography.Text>
-                                </Col>
-                                <Col span={12}>
-                                    <Typography.Text>
-                                        {hoaDon?.ghiChu ? hoaDon?.ghiChu : "Không có"}{" "}
-                                    </Typography.Text>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                   <ThongTinHDCT hoaDon={hoaDon} />
                 </Card>
-                {/*  */}
+
+                {/* ----------------------------------------------------------------- */}
                 <Card
                     title={<Typography.Title level={4}>Lịch sử thanh toán</Typography.Title>}
+                    extra={<Button type="primary">Xác nhận thanh toán</Button>}
                     size="small"
                 >
                     <LichSuThanhToanHDCT lichSuThanhToan={lichSuThanhToan} />
                 </Card>
-                <Card title={<Typography.Title level={4}>Sản phẩm</Typography.Title>} size="small">
+
+                {/* ----------------------------------------------------------------- */}
+                <Card
+                    title={<Typography.Title level={4}>Sản phẩm</Typography.Title>}
+                    extra={<Button type="primary">Thêm sản phẩm</Button>}
+                    size="small"
+                >
                     <Table
                         dataSource={hoaDonChiTiet}
                         columns={columnsSanPham}
@@ -428,6 +370,7 @@ const HoaDonChiTietPage = () => {
                 </Card>
             </Space>
 
+            {/* ----------------------------------------------------------------- */}
             {/* //Modal  */}
             {/* modal lshd */}
             <Modal width={1000} open={isModalOpen} onCancel={handleCancel} footer={false}>
@@ -438,8 +381,9 @@ const HoaDonChiTietPage = () => {
             <Modal
                 title="Xác nhận đơn hàng"
                 open={modalXacThuc}
-                onOk={handleOKXacThuc}
+                // onOk={handleOKXacThuc}
                 onCancel={handleCancelXacThuc}
+                footer={false}
             >
                 <Input.TextArea
                     value={lichSuHD?.ghiChu}
@@ -451,6 +395,17 @@ const HoaDonChiTietPage = () => {
                     }
                     placeholder="mô tả"
                 />
+                <div className="d-flex justify-content-end mt-2 ">
+                    <Button
+                        key={"submit"}
+                        type="primary"
+                        htmlType="submit"
+                        disabled={lichSuHD?.ghiChu.trim() ? false : true}
+                        onClick={handleOKXacThuc}
+                    >
+                        Xác thực
+                    </Button>
+                </div>
             </Modal>
             {/* // End modal */}
         </>
