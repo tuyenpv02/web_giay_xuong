@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.HoaDonChiTiet;
+import com.example.demo.entity.ThuongHieu;
 import com.example.demo.repository.HoaDonChiTietRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,15 @@ public class HoaDonChiTietService {
         return repository.save(hoaDonChiTiet);
     }
 
+    //    update so luong
+    public HoaDonChiTiet update(Long id, HoaDonChiTiet newHoaDonChiTiet) {
+        Optional<HoaDonChiTiet> optional = repository.findById(id);
+        return optional.map(o -> {
+            o.setSoLuong(newHoaDonChiTiet.getSoLuong());
+            return repository.save(o);
+        }).orElse(null);
+    }
+
     public HoaDonChiTiet deleteById(Long id) {
         Optional<HoaDonChiTiet> optional = repository.findById(id);
         return optional.map(o -> {
@@ -29,9 +39,17 @@ public class HoaDonChiTietService {
         }).orElse(null);
     }
 
-
-
     public Boolean existsById(Long id) {
         return repository.existsById(id);
     }
+
+    public Boolean existsByHDAndCTSP(Long idCTSP, long idHD) {
+        List<HoaDonChiTiet> ds = repository.findByHDAnIdCTSP(idCTSP, idHD);
+        System.out.println(ds);
+        if (ds.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

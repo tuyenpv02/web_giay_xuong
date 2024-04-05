@@ -22,6 +22,7 @@ public class LichSuHoaDonController {
 
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody LichSuHoaDon lichSuHoaDon) {
+        System.out.println(lichSuHoaDon);
         return ResponseEntity.ok(service.add(lichSuHoaDon));
     }
 }

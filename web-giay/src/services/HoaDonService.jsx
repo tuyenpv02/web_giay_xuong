@@ -9,7 +9,7 @@ class HoaDonService {
 
     // filter
     static filter = async ({ searchText, trangThai, loaiHoaDon, ngayBatDau, ngayKetThuc }) => {
-        console.log(searchText, trangThai, loaiHoaDon, ngayBatDau, ngayKetThuc);
+        // console.log(searchText, trangThai, loaiHoaDon, ngayBatDau, ngayKetThuc);
         let res = await request.get(`hoa-don/filter`, {
             params: {
                 searchText,
@@ -37,7 +37,7 @@ class HoaDonService {
         const data = {
             ...hoaDon,
         };
-        console.log('data', data, id);
+        // console.log('data', data, id);
         return request.put("hoa-don/" + id, data);
     }
 

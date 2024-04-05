@@ -8,37 +8,39 @@ const StepHoaDonChiTiet = ({ lichSuHoaDon }) => {
             <Steps labelPlacement="vertical" style={{ overflowY: "auto" }}>
                 {lichSuHoaDon?.map((step) => {
                     return (
-                        <Step
-                            style={{ maxWidth: "200px" }}
-                            icon={
-                                step.trangThai == 0 ? (
-                                    <Avatar
-                                        size={"large"}
-                                        style={{
-                                            backgroundColor: "#e04927",
-                                            verticalAlign: "middle",
-                                        }}
-                                        icon={<WarningOutlined />}
-                                    />
-                                ) : (
-                                    <Avatar
-                                        size={"large"}
-                                        style={{
-                                            backgroundColor: "#26b726",
-                                            verticalAlign: "middle",
-                                        }}
-                                        icon={<FileTextOutlined />}
-                                    />
-                                )
-                            }
-                            title={
-                                <Typography.Title color="blue" level={4}>
-                                    {formatTrangThaiHD(step?.trangThai)}
-                                </Typography.Title>
-                            }
-                            subTitle={step.ngayTao}
-                            key={step.id}
-                        ></Step>
+                        step.hanhDong == 1 && (
+                            <Step
+                                style={{ maxWidth: "200px" }}
+                                icon={
+                                    step.trangThai == 0 ? (
+                                        <Avatar
+                                            size={"large"}
+                                            style={{
+                                                backgroundColor: "#e04927",
+                                                verticalAlign: "middle",
+                                            }}
+                                            icon={<WarningOutlined />}
+                                        />
+                                    ) : (
+                                        <Avatar
+                                            size={"large"}
+                                            style={{
+                                                backgroundColor: "#26b726",
+                                                verticalAlign: "middle",
+                                            }}
+                                            icon={<FileTextOutlined />}
+                                        />
+                                    )
+                                }
+                                title={
+                                    <Typography.Title color="blue" level={4}>
+                                        {formatTrangThaiHD(step?.trangThai)}
+                                    </Typography.Title>
+                                }
+                                subTitle={step.ngayTao}
+                                key={step.id}
+                            ></Step>
+                        )
                     );
                 })}
             </Steps>

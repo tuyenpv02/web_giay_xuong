@@ -13,8 +13,8 @@ class LichSuHoaDonService {
     };
 
     // add
-    static add(data) {
-        console.log('data ',data);
+    static add(data, idHoaDon) {
+        data = {...data, hoaDon:{id: idHoaDon}}
         return request.post("lich-su-hoa-don", data);
     }
 }

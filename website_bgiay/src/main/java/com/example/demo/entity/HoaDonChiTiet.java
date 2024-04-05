@@ -21,13 +21,12 @@ public class HoaDonChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "idHoaDon", referencedColumnName = "id")
-    @JsonIgnore
+//    @JsonIgnore
     private HoaDon hoaDon;
 
     @ManyToOne
     @JoinColumn(name = "idChiTietSanPham", referencedColumnName = "id")
     private ChiTietSanPham chiTietSanPham;
-
 
     private Integer soLuong;
     private BigDecimal donGia;

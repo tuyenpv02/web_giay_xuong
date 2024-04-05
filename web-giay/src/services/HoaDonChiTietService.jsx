@@ -11,15 +11,22 @@ class HoaDonChiTietService {
         return res.data;
     };
 
-  // delete
-  static delete(id) {
-    return request.delete("hoa-don-chi-tiet/" + id);
-}
+    // delete
+    static delete(id) {
+        return request.delete("hoa-don-chi-tiet/" + id);
+    }
 
-// add
-static add(data) {
-    return request.post("hoa-don-chi-tiet", data);
-}
+    // add
+    static add(data) {
+        console.log(data);
+        // return request.post("hoa-don-chi-tiet", data);
+    }
+
+    // add
+    static update(id, data) {
+        console.log(id, data);
+        return request.put("hoa-don-chi-tiet/" + id, data);
+    }
 }
 
 export default HoaDonChiTietService;

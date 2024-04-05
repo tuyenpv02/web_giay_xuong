@@ -69,8 +69,6 @@ public class ChiTietSanPhamService {
 
     public ChiTietSanPham deleteById(Long id) {
         Optional<ChiTietSanPham> optional = repository.findById(id);
-//
-//
         return optional.map(o -> {
             repository.delete(o);
             return o;

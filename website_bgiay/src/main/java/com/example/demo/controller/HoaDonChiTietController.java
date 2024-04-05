@@ -16,7 +16,7 @@ public class HoaDonChiTietController {
     HoaDonChiTietService service;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllByIdHoaDon(@RequestParam("idHoaDon")Long idHoaDon){
+    public ResponseEntity<?> getAllByIdHoaDon(@RequestParam("idHoaDon") Long idHoaDon) {
         return ResponseEntity.ok(service.getAllByIdHoaDon(idHoaDon));
     }
 
@@ -33,6 +33,21 @@ public class HoaDonChiTietController {
 
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody HoaDonChiTiet hoaDonChiTiet) {
+        System.out.println(hoaDonChiTiet);
+        Boolean check = service.existsByHDAndCTSP(
+                hoaDonChiTiet.getChiTietSanPham().getId(), hoaDonChiTiet.getHoaDon().getId());
+        if(check){
+
+            return  ResponseEntity.ok("đã tồn tại");
+        }
         return ResponseEntity.ok(service.add(hoaDonChiTiet));
+    }
+
+    //    update so luong
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(
+            @PathVariable("id") Long id
+            , @RequestBody HoaDonChiTiet hoaDonChiTiet) {
+        return ResponseEntity.ok(service.update(id, hoaDonChiTiet));
     }
 }
