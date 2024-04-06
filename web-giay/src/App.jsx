@@ -23,6 +23,7 @@ import {
 import NhanVienAdd from "./pages/admin/taiKhoan/nhanVien/NhanVienAdd";
 import NhanVienEdit from "./pages/admin/taiKhoan/nhanVien/NhanVienEdit";
 import HoaDonChiTietPage from "./pages/admin/hoaDon/HoaDonChiTietPage";
+import SanPhamAddPage from "./pages/admin/sanPham/SanPhamAddPage";
 
 function App() {
     return (
@@ -46,6 +47,9 @@ function App() {
                         ></Route>
 
                         <Route path="san-pham" element={<SanPhamPage />}></Route>
+                        <Route path="san-pham/add" element={<SanPhamAddPage />}></Route>
+
+
                         <Route path="chat-lieu" element={<ChatLieuPage />} />
                         <Route path="de-giay" element={<DeGiayPage />} />
                         <Route path="kich-co" element={<KichCoPage />} />

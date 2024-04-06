@@ -2,10 +2,13 @@ package com.example.demo.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "san_pham")
@@ -15,6 +18,7 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @Builder
+//@JsonIgnoreProperties("chiTietSanPham")
 public class SanPham {
 
     @Id
@@ -42,5 +46,8 @@ public class SanPham {
     private Timestamp ngayCapNhat;
 
     private Integer trangThai;
+
+//    @OneToMany(mappedBy = "sanPham")
+//    private Set<ChiTietSanPham> chiTietSanPhams;
 
 }

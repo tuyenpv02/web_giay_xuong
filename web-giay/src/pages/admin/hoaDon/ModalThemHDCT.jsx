@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button, Modal, Input, Table, Typography, Space, InputNumber } from "antd";
 import { useEffect, useState } from "react";
 import ChiTietSanPhamService from "../../../services/ChiTietSanPhamService";
@@ -5,11 +6,22 @@ import { formatPrice } from "../../../utils/formatNumber";
 import HoaDonChiTietService from "../../../services/HoaDonChiTietService";
 import { toast } from "react-toastify";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import getDateNow from "../../../utils/GetDateNow";
+import LichSuHoaDonService from "../../../services/LichSuHoaDonService";
 
 const ModalThemHDCT = ({ hoaDon, isLoad, setIsLoad }) => {
     const [dataSource, setDataSource] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [soLuong, setSoLuong] = useState(1);
+
+    const [lichSuHD, setLichSuHD] = useState({
+        hoaDon: { id: hoaDon?.id },
+        ghiChu: "Chỉnh sửa sản phẩm trong đơn hàng",
+        trangThai: 9,
+        hanhDong: 2,
+        ngayTao: getDateNow(),
+        nguoiTao: "anph779",
+    });
 
     const [newHoaDonChiTiet, setNewHoaDonChiTiet] = useState({
         idHoaDon: { id: hoaDon?.id },
@@ -24,12 +36,7 @@ const ModalThemHDCT = ({ hoaDon, isLoad, setIsLoad }) => {
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setNewHoaDonChiTiet({
-            idHoaDon: hoaDon?.id,
-            idChiTietSanPham: null,
-            soLuong: null,
-            donGia: null,
-        });
+        setNewHoaDonChiTiet(null);
         setSoLuong(1);
     };
     const handleOk = async (e) => {
@@ -47,17 +54,18 @@ const ModalThemHDCT = ({ hoaDon, isLoad, setIsLoad }) => {
             chiTietSanPham: {
                 id: newHoaDonChiTiet.idChiTietSanPham,
             },
+            trangThai: 1,
         };
-        console.log(data);
-          HoaDonChiTietService.add(data)
-        //     .then((res) => {
-        //         toast.success("Thêm sản phẩm thành công ");
-        //         setIsLoad(!isLoad);
-        //     })
-        //     .catch((err) => {
-        //         toast.error("Thất bại ", err);
-        //     });
-
+        const lsHD = { ...lichSuHD, hoaDon: { id: hoaDon?.id } };
+        HoaDonChiTietService.add(data)
+            .then((res) => {
+                LichSuHoaDonService.add(lsHD);
+                setIsLoad(!isLoad);
+                toast.success("Thêm thành công ");
+            })
+            .catch((err) => {
+                toast.error("Thất bại 1", err);
+            });
         handleCancel();
     };
 
@@ -68,7 +76,6 @@ const ModalThemHDCT = ({ hoaDon, isLoad, setIsLoad }) => {
             idChiTietSanPham: record.id,
             donGia: record?.giaBan,
         });
-        console.log(newHoaDonChiTiet);
     };
 
     useEffect(() => {
@@ -150,7 +157,7 @@ const ModalThemHDCT = ({ hoaDon, isLoad, setIsLoad }) => {
                 onCancel={() => setOpen(false)}
                 title="Chọn sản phẩm"
                 centered
-                width={1000}
+                width={800}
                 footer={false}
             >
                 <Input placeholder="tìm kiếm" style={{ width: 300, marginBottom: "10px" }} />

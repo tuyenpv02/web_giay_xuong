@@ -65,6 +65,9 @@ function formatTrangThaiLSHD(value) {
         case 9:
             trangThai = "chỉnh sửa hóa đơn";
             break;
+        case 10:
+            trangThai = "Xác nhận thanh toán";
+            break;
         default:
             trangThai = value;
     }

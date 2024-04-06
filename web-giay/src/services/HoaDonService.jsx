@@ -28,6 +28,7 @@ class HoaDonService {
             ...hoaDon,
             trangThai: trangThai,
         };
+        console.log(hoaDon, data);
         // console.log('data', data);
         return request.put("hoa-don/" + id, data);
     }

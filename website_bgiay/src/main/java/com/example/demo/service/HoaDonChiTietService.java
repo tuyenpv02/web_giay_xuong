@@ -43,13 +43,12 @@ public class HoaDonChiTietService {
         return repository.existsById(id);
     }
 
-    public Boolean existsByHDAndCTSP(Long idCTSP, long idHD) {
+    public List<HoaDonChiTiet> existsByHDAndCTSP(Long idCTSP, long idHD) {
         List<HoaDonChiTiet> ds = repository.findByHDAnIdCTSP(idCTSP, idHD);
-        System.out.println(ds);
         if (ds.size() > 0) {
-            return true;
+            return ds;
         }
-        return false;
+        return null;
     }
 
 }

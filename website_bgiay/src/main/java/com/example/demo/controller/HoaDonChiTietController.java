@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/hoa-don-chi-tiet")
 @CrossOrigin("*")
@@ -34,11 +36,11 @@ public class HoaDonChiTietController {
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody HoaDonChiTiet hoaDonChiTiet) {
         System.out.println(hoaDonChiTiet);
-        Boolean check = service.existsByHDAndCTSP(
+        List<HoaDonChiTiet> check = service.existsByHDAndCTSP(
                 hoaDonChiTiet.getChiTietSanPham().getId(), hoaDonChiTiet.getHoaDon().getId());
-        if(check){
-
-            return  ResponseEntity.ok("đã tồn tại");
+        if (check != null) {
+            hoaDonChiTiet.setSoLuong(check.get(0).getSoLuong()+ hoaDonChiTiet.getSoLuong());
+            return ResponseEntity.ok(service.update(check.get(0).getId(), hoaDonChiTiet));
         }
         return ResponseEntity.ok(service.add(hoaDonChiTiet));
     }

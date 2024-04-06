@@ -22,6 +22,8 @@ public class TaiKhoan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String ma;
+
     @Column(name = "ten")
     private String ten;
 

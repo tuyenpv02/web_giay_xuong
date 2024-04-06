@@ -8,7 +8,7 @@ class ThuongHieuService {
 
     // detail by id
     static getById = async (id) => {
-        let res = await request.get(id);
+        let res = await request.get(`thuong-hieu`+id);
         console.log(res);
         return res.data;
     };
@@ -20,7 +20,7 @@ class ThuongHieuService {
 
     // add
     static add(data) {
-        return request.post("http://localhost:8080/thuong-hieu", data);
+        return request.post("thuong-hieu", data);
     }
 
     // update
