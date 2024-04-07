@@ -24,7 +24,7 @@ public class PhuongThucThanhToan {
 
     @ManyToOne
     @JoinColumn(name = "idHoaDon", referencedColumnName = "id")
-    @JsonIgnore
+//    @JsonIgnore
     private HoaDon hoaDon;
 
     @Column(name = "tenPhuongThucTT")

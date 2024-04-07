@@ -59,7 +59,19 @@ const HoaDonChiTietPage = () => {
         getHDById();
         getLSHDById();
         getHDCTById();
+        getLSTTById();
     }, [isLoad]);
+
+    useEffect(() => {
+        let total = hoaDonChiTiet.reduce((a, b) => a + b.donGia * b.soLuong, 0);
+        let data = { ...hoaDon, tongTien: total };
+        HoaDonService.updateHoaDon(hoaDon?.id, data)
+            .then((res) => {
+                console.log(res);
+                getHDById()
+            })
+            .catch((err) => {});
+    }, [hoaDonChiTiet]);
 
     // tạo log lịch sử hóa đơn
     const taoLSHD = async () => {
@@ -123,11 +135,11 @@ const HoaDonChiTietPage = () => {
     }, []);
 
     // lich su thanh toan
+    let getLSTTById = async () => {
+        let res = await PhuongThucThanhToanService.getAllByHD(params.id);
+        setLichSuThanhToan([...res]);
+    };
     useEffect(() => {
-        let getLSTTById = async () => {
-            let res = await PhuongThucThanhToanService.getAllByHD(params.id);
-            setLichSuThanhToan([...res]);
-        };
         getLSTTById();
     }, []);
 
@@ -385,9 +397,16 @@ const HoaDonChiTietPage = () => {
                 {/* ----------------------------------------------------------------- */}
                 <Card
                     title={<Typography.Title level={4}>Lịch sử thanh toán</Typography.Title>}
-                    extra={<ModalXacNhanThanhToan />}
+                    extra={
+                        <ModalXacNhanThanhToan
+                            isLoad={isLoad}
+                            setIsLoad={setIsLoad}
+                            hoaDon={hoaDon}
+                        />
+                    }
                     size="small"
                 >
+                    {/* danh sách lịch sử hóa đơn */}
                     <LichSuThanhToanHDCT lichSuThanhToan={lichSuThanhToan} />
                 </Card>
 

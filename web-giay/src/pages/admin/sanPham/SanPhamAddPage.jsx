@@ -18,6 +18,10 @@ import ChatLieuService from "./../../../services/ChatLieuService";
 import KichCoService from "./../../../services/KichCoService";
 import MauSacService from "./../../../services/MauSacService";
 import { useNavigate } from "react-router-dom";
+import ChiTietSanPhamService from "./../../../services/ChiTietSanPhamService";
+import chiTietSanPhamSlice from "./../../../redux-toolkit/chiTietSanPhamSlice";
+import { toast } from "react-toastify";
+import { randomChuoi } from "../../../utils/RandomChuoi";
 
 function SanPhamAddPage() {
     const navigate = useNavigate();
@@ -26,6 +30,7 @@ function SanPhamAddPage() {
     const [defaultChiTietSP, setDefaultChiTietSP] = useState({
         giaBan: 100000,
         soLuong: 10,
+        ma: "",
         sanPham: { id: null },
         deGiay: { id: null },
         chatLieu: { id: null },
@@ -77,6 +82,7 @@ function SanPhamAddPage() {
                     ...defaultChiTietSP,
                     key: i++,
                     ten: `${sanPham.ten} [${mau.ten} - ${kichCo.ten}]`,
+                    ma: `sp00${sanPham.id}${mau.id}${kichCo.id}${randomChuoi()}`,
                     mauSac: { id: color },
                     kichCo: { id: size },
                 });
@@ -108,6 +114,24 @@ function SanPhamAddPage() {
         });
     };
 
+    const taoSanPhamChiTiet = async () => {
+        let data = danhSachSanPhamChiTiet.map((o) => {
+            let { key, ...object } = o;
+            return object;
+        });
+        ChiTietSanPhamService.addAll(data)
+            .then((res) => {
+                console.log(res);
+                toast.success("Thêm thành công");
+                setTimeout(() => {
+                    navigate("/admin/san-pham");
+                }, 1500);
+            })
+            .catch((err) => {
+                toast.error("Thêm sản phẩm thất bại! ", err.message);
+            });
+    };
+
     const ThemSanPham2 = () => {
         console.log(danhSachSanPhamChiTiet);
     };
@@ -116,20 +140,20 @@ function SanPhamAddPage() {
         {
             title: "#",
             dataIndex: "ten",
-            key: "ten",
+            // key: "ten",
             width: 20,
             render: (_, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Sản phẩm",
             dataIndex: "ten",
-            key: "ten",
+            // key: "ten",
             render: (text) => <Typography.Text>{text}</Typography.Text>,
         },
         {
             title: "Số lượng",
             dataIndex: "soLuong",
-            key: "soLuong",
+            // key: "soLuong",
             width: 150,
             render: (text, record, index) => (
                 <InputNumber
@@ -156,6 +180,7 @@ function SanPhamAddPage() {
         },
         {
             title: "Action",
+            width: 50,
             render: (_, record, index) => (
                 <>
                     <Button type="text" onClick={() => xoaChiTietSanPham(record, index)}>
@@ -166,9 +191,17 @@ function SanPhamAddPage() {
         },
         {
             title: "Ảnh",
-            render: (_, record) => <></>,
+            render: (_, record, index) => (
+                <>
+                    <Button type="text" onClick={() => console.log("chưa ")}>
+                        Thêm
+                    </Button>
+                </>
+            ),
+            onCell: (record, index) => {},
         },
     ];
+    const rowSpanMap = {};
     return (
         <>
             <Space direction="vertical" size="middle" style={{ display: "flex" }}>
@@ -334,17 +367,21 @@ function SanPhamAddPage() {
                     </Row>
                     <Flex justify="end">
                         <Button type="primary" onClick={() => ThemSanPham()}>
-                            Tạo
+                            Thêm
                         </Button>
                     </Flex>
                 </Card>
+                {/*  */}
+                
                 {/*  */}
                 <Card size="small" title={"Danh sách biến thể"}>
                     <Table columns={columns} dataSource={danhSachSanPhamChiTiet} key={"key"} />
 
                     <br />
                     <Flex justify="end">
-                        <Button type="primary">Thêm sản phẩm</Button>
+                        <Button type="primary" onClick={() => taoSanPhamChiTiet()}>
+                            Thêm sản phẩm
+                        </Button>
                         <Button type="primary" onClick={() => ThemSanPham2()}>
                             Thêm sản log
                         </Button>

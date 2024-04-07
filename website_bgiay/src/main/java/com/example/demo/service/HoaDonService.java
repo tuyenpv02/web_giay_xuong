@@ -80,6 +80,7 @@ public class HoaDonService {
             o.setSdt(newHoaDon.getSdt());
             o.setDiaChi(newHoaDon.getDiaChi());
             o.setHoTen(newHoaDon.getHoTen());
+            o.setTongTien(newHoaDon.getTongTien());
 
             o.setNguoiCapNhat(newHoaDon.getNguoiCapNhat());
             o.setNgayCapNhat(newHoaDon.getNgayCapNhat());

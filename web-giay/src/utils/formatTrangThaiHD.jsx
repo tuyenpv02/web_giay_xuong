@@ -29,7 +29,7 @@ function formatTrangThaiHD(value) {
             trangThai = value;
     }
 
-    return trangThai;
+    return capitalizeFirstLetter(trangThai);
 }
 
 function formatTrangThaiLSHD(value) {
@@ -72,7 +72,11 @@ function formatTrangThaiLSHD(value) {
             trangThai = value;
     }
 
-    return trangThai;
+    return capitalizeFirstLetter(trangThai);
 }
+
+function capitalizeFirstLetter(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 
 export { formatTrangThaiHD, formatTrangThaiLSHD };

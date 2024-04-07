@@ -35,13 +35,6 @@ public class HoaDonChiTietController {
 
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody HoaDonChiTiet hoaDonChiTiet) {
-        System.out.println(hoaDonChiTiet);
-        List<HoaDonChiTiet> check = service.existsByHDAndCTSP(
-                hoaDonChiTiet.getChiTietSanPham().getId(), hoaDonChiTiet.getHoaDon().getId());
-        if (check != null) {
-            hoaDonChiTiet.setSoLuong(check.get(0).getSoLuong()+ hoaDonChiTiet.getSoLuong());
-            return ResponseEntity.ok(service.update(check.get(0).getId(), hoaDonChiTiet));
-        }
         return ResponseEntity.ok(service.add(hoaDonChiTiet));
     }
 

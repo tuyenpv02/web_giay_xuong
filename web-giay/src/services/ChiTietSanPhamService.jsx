@@ -11,6 +11,17 @@ class ChiTietSanPhamService {
         return res.data;
     };
 
+      // add
+      static add(data) {
+        return request.post("chi-tiet-san-pham", data);
+    }
+
+     // add
+     static addAll(data) {
+        return request.post("chi-tiet-san-pham/saveAll", data);
+    }
+
+
 }
 
 export default ChiTietSanPhamService;

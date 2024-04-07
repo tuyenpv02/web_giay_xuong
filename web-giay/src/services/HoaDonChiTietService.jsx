@@ -23,7 +23,7 @@ class HoaDonChiTietService {
 
     // add
     static update(id, data) {
-        console.log(id, data);
+        console.log('id ',id, data);
         return request.put("hoa-don-chi-tiet/" + id, data);
     }
 }

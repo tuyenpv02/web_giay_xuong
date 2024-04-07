@@ -33,7 +33,22 @@ public class ChiTietSanPhamService {
     }
 
     public ChiTietSanPham add(ChiTietSanPham chiTietSanPham) {
-        return repository.save(chiTietSanPham);
+        chiTietSanPham.setId(null);
+        ChiTietSanPham ctsp = repository.findTopMotCTSP();
+        if (ctsp == null) {
+            String ma = "SPCT1000" + 1;
+            chiTietSanPham.setMa(ma);
+            return repository.save(chiTietSanPham);
+        } else {
+            String maHoaDon = "SPCT000" + (ctsp.getId() + 1);
+            chiTietSanPham.setMa(maHoaDon);
+            return repository.save(chiTietSanPham);
+        }
+    }
+
+    public List<ChiTietSanPham> addDanhSach(List<ChiTietSanPham> chiTietSanPhams) {
+        chiTietSanPhams.stream().forEach(o-> System.out.println(o));
+       return repository.saveAll(chiTietSanPhams);
     }
 
     public ChiTietSanPham update(Long id, ChiTietSanPham newChiTietSanPham) {

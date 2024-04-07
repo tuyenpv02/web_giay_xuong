@@ -54,6 +54,10 @@ public class HoaDonController {
                     "Không tìm thấy"
             );
         }
+        System.out.println(hoaDon);
+        System.out.println(hoaDon);
+        System.out.println(hoaDon);
+        System.out.println(hoaDon);
         return ResponseEntity.ok(service.update(id, hoaDon));
     }
 }
