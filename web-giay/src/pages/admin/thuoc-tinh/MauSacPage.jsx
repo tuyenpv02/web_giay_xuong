@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import MauSacService from "../../../services/MauSacService";
 import { useDispatch } from "react-redux";
 import {
@@ -13,7 +13,7 @@ import {
     Switch,
     Table,
     Tag,
-    message,
+    message,Typography
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
@@ -134,16 +134,19 @@ function MauSacPage() {
         {
             title: "#Id",
             dataIndex: "id",
-            render: (text) => <a>{text}</a>,
+            width: 80,
+            render: (text, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Tên",
             dataIndex: "ten",
+            // width: 400,
             render: (text) => <a>{text}</a>,
         },
         {
             title: "Màu",
             dataIndex: "ten",
+
             render: (text) => (
                 <>
                     <Tag color={text == "white" ? "" : text}>{text}</Tag>

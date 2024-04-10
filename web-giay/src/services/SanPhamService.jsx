@@ -9,16 +9,30 @@ class SanPhamService {
 
     // detail by id
     static getById = async (id) => {
-        let res = await request.get(`san-pham`+id);
+        let res = await request.get(`san-pham/`+id);
+        return res.data;
+    };
+      // filter
+      static filter = async ({ searchText, trangThai  }) => {
+        console.log(searchText, trangThai, 'sa');
+        let res = await request.get(`san-pham/filter`, {
+            params: {
+                searchText,
+                trangThai 
+            },
+        });
         return res.data;
     };
 
-    static search(seachText) {
-        return request.get("san-pham/search", {
-            params: {
-                seachText,
-            },
-        });
+    // add
+    static add(data) {
+        console.log('data',data);
+        return request.post("san-pham", data);
+    }
+
+     // update
+     static update(id, data) {
+        return request.put("san-pham/" + id, data);
     }
 }
 

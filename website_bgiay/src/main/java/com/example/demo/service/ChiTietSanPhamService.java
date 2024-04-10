@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,14 +23,33 @@ public class ChiTietSanPhamService {
     @Autowired
     private ChiTietSanPhamRepository repository;
 
-    public List<ChiTietSanPham> search(String text) {
+    public List<HoaDon> filter(String searchText, String trangThai
+            ) {
         Specification<ChiTietSanPham> specification = (root, query, criteriaBuilder) -> {
-            Predicate likeTen = criteriaBuilder.like(root.get("ma"), "%" + text + "%");
-            Predicate likeNguoiTao = criteriaBuilder.like(root.get("nguoiTao"), "%" + text + "%");
+            List<Predicate> predicates = new ArrayList<>();
 
-            return criteriaBuilder.or(likeTen, likeNguoiTao);
+            Predicate likeTen = criteriaBuilder.like(root.get("ma"), "%" + searchText + "%");
+            Predicate likeNguoiTao = criteriaBuilder.like(root.get("hoTen"), "%" + searchText + "%");
+            Predicate likeEmail = criteriaBuilder.like(root.get("email"), "%" + searchText + "%");
+            Predicate likeSdt = criteriaBuilder.like(root.get("sdt"), "%" + searchText + "%");
+            predicates.add(criteriaBuilder.or(likeNguoiTao,likeTen,likeEmail,likeSdt));
+
+            if (trangThai.trim().length() != 0) {
+                Predicate specTrangThai = criteriaBuilder.equal(root.get("trangThai"), trangThai);
+                predicates.add(specTrangThai);
+            }
+
+            // Sắp xếp theo id (ASC)
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
         return repository.findAll(specification);
+//        return repository.filter(searchText, loaiHoaDon, trangThai, ngayBatDau, ngayKetThuc);
+    }
+
+    public List<ChiTietSanPham> getAllByIdSanPham(Long idSP) {
+        return repository.findBySanPham(idSP);
     }
 
     public List<ChiTietSanPham> getAll() {
@@ -54,13 +78,13 @@ public class ChiTietSanPhamService {
     public ChiTietSanPham update(Long id, ChiTietSanPham newChiTietSanPham) {
         Optional<ChiTietSanPham> optional = repository.findById(id);
         return optional.map(o -> {
-            o.setSanPham(SanPham.builder().id(newChiTietSanPham.getSanPham().getId()).build());
+//            o.setSanPham(SanPham.builder().id(newChiTietSanPham.getSanPham().getId()).build());
             o.setMauSac(MauSac.builder().id(newChiTietSanPham.getMauSac().getId()).build());
             o.setKichCo(KichCo.builder().id(newChiTietSanPham.getKichCo().getId()).build());
             o.setChatLieu(ChatLieu.builder().id(newChiTietSanPham.getChatLieu().getId()).build());
             o.setDeGiay(DeGiay.builder().id(newChiTietSanPham.getDeGiay().getId()).build());
 
-            o.setMa(newChiTietSanPham.getMa());
+//            o.setMa(newChiTietSanPham.getMa());
             o.setTen(newChiTietSanPham.getTen());
             o.setSoLuong(newChiTietSanPham.getSoLuong());
             o.setGiaBan(newChiTietSanPham.getGiaBan());

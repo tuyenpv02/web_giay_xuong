@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.SanPham;
+import com.example.demo.entity.TaiKhoan;
 import com.example.demo.entity.ThuongHieu;
 import com.example.demo.service.SanPhamService;
 import com.example.demo.service.ThuongHieuService;
@@ -16,6 +17,19 @@ public class SanPhamController {
 
     @Autowired
     SanPhamService service;
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filter(
+            @RequestParam("searchText") String searchText,
+            @RequestParam("trangThai") String trangThai
+    ) {
+        System.out.println(searchText);
+        System.out.println(trangThai);
+        System.out.println(trangThai);
+        System.out.println(searchText);
+        return ResponseEntity.ok(service.filter(searchText.trim(), trangThai.trim()
+        ));
+    }
 
     @GetMapping("")
     public ResponseEntity<?> getAll() {
@@ -51,5 +65,16 @@ public class SanPhamController {
             );
         }
         return ResponseEntity.ok(service.add(sanPham));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id
+            , @RequestBody SanPham sanPham) {
+        if (!service.existsById(id)) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Không tìm thấy"
+            );
+        }
+        return ResponseEntity.ok(service.update(id, sanPham));
     }
 }

@@ -1,12 +1,18 @@
-import { Avatar, Button, Col, Empty, Row, Select, Space, Table, Tag } from "antd";
+import { Input, Button, Col, Empty, Row, Select, Space, Table, Tag,Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SanPhamService from "../../../services/SanPhamService";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, SearchOutlined } from "@ant-design/icons";
+import ModalSuaThemSP from "./ModalSuaSanPham";
 
 function SanPhamPage() {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
+    const [load, setLoad] = useState(false);
+    const [filter, setFilter] = useState({
+        searchText: "",
+        trangThai: "",
+    });
 
     useEffect(() => {
         const getData = async () => {
@@ -14,16 +20,26 @@ function SanPhamPage() {
             setData([...res]);
         };
         getData();
-    }, []);
+    }, [load]);
+
+    useEffect(() => {
+        // console.log(filter);
+        let filterHoaDon = async () => {
+            let res = await SanPhamService.filter(filter);
+            setData([...res]);
+        };
+        filterHoaDon();
+    }, [filter]);
 
     const columns = [
         {
             title: "STT",
-            render: (_, record, index) => <a>{index + 1}</a>,
+            render: (_, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Tên",
             dataIndex: "ten",
+            width: 400,
             render: (text) => <a>{text}</a>,
         },
         {
@@ -42,9 +58,16 @@ function SanPhamPage() {
         },
         {
             title: "Action",
+            width: 150,
             render: (_, record) => (
                 <>
-                    <Button type="text" onClick={() => navigate("edit/" + record.id)}>
+                    <ModalSuaThemSP load={load} setLoad={setLoad} sanPhamEdit={record}  />
+                    <Button
+                        type="text"
+                        onClick={() => {
+                            navigate("detail/" + record.id);
+                        }}
+                    >
                         <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
                 </>
@@ -54,37 +77,36 @@ function SanPhamPage() {
 
     return (
         <>
-            <h2>Sản phẩm</h2>
+            <h3>Sản phẩm</h3>
 
             <div className="p-2 bg-body-tertiary rounded box-shadow">
                 <Row className="mb-2 " gutter={[10, 10]}>
                     <Col span={8}>
-                        <label htmlFor="" className="form-label ">
-                            Nhập
-                        </label>
-                        <input
-                            className=" form-control"
-                            name="searchText"
-                            placeholder="tìm kiếm "
-                            type="text"
-                            // value={searchText}
-                            // onChange={(e) => setSearchText(e.target.value)}
+                        <Input
+                            value={filter.searchText}
+                            name={filter.searchText}
+                            onChange={(e) =>
+                                setFilter({
+                                    ...filter,
+                                    searchText: e.target.value,
+                                })
+                            }
+                            prefix={<SearchOutlined />}
+                            placeholder="tìm kiếm"
                         />
                     </Col>
                     <Col span={8}>
-                        <label htmlFor="" className="form-label ">
-                            Trạng thái
-                        </label>
-                        <select
-                            className="form-select w-50"
-                            name="trangThai"
-                            // value={trangThai}
-                            // onChange={(e) => setTrangThai(e.target.value)}
+                        <Select
+                            className=" w-75 "
+                            placeholder="Trạng thái"
+                            name="loaiHoaDon"
+                            value={filter.trangThai}
+                            onChange={(e) => setFilter({ ...filter, trangThai: e })}
                         >
-                            <option value=" ">Tất cả</option>
-                            <option value="0">Đang bán</option>
-                            <option value="1">Ngưng bán</option>
-                        </select>
+                            <Select.Option value={""}>Tất cả</Select.Option>
+                            <Select.Option value={"1"}>Hoạt động</Select.Option>
+                            <Select.Option value={"0"}>Dừng</Select.Option>
+                        </Select>
                     </Col>
                     <Col span={8}>
                         <Space className="d-flex align-items-end w-100 h-100 justify-content-center  ">

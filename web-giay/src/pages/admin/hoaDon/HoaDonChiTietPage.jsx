@@ -68,7 +68,7 @@ const HoaDonChiTietPage = () => {
         HoaDonService.updateHoaDon(hoaDon?.id, data)
             .then((res) => {
                 console.log(res);
-                getHDById()
+                getHDById();
             })
             .catch((err) => {});
     }, [hoaDonChiTiet]);
@@ -199,7 +199,7 @@ const HoaDonChiTietPage = () => {
     const columnsSanPham = [
         {
             title: "#",
-            // dataIndex: "chiTietSanPham",
+            width: 80,
             render: (text, record, index) => (
                 <>
                     <Typography.Text size={"large"}>{index + 1}</Typography.Text>
@@ -209,6 +209,7 @@ const HoaDonChiTietPage = () => {
         {
             title: "sản phẩm",
             dataIndex: "chiTietSanPham",
+            width: 400,
             render: (text, record) => (
                 <>
                     <Flex vertical>
@@ -233,7 +234,7 @@ const HoaDonChiTietPage = () => {
             dataIndex: "soLuong",
             render: (text, record) => (
                 <Space wrap>
-                    {hoaDon?.trangThai < 4 && (
+                    {hoaDon?.trangThai < 3 && (
                         <Button icon={<MinusOutlined />} onClick={() => giamSoLuongHDCT(record)} />
                     )}
 
@@ -247,7 +248,7 @@ const HoaDonChiTietPage = () => {
                     <Typography.Text>{record.soLuong}</Typography.Text>
                     {/* )} */}
 
-                    {hoaDon?.trangThai < 4 && (
+                    {hoaDon?.trangThai < 3 && (
                         <Button icon={<PlusOutlined />} onClick={() => tangSoLuongHDCT(record)} />
                     )}
                 </Space>
@@ -268,7 +269,7 @@ const HoaDonChiTietPage = () => {
             title: "Thao tác",
             render: (text, record) => (
                 <>
-                    {hoaDon?.trangThai < 4 && (
+                    {hoaDon?.trangThai < 3 && (
                         <Button onClick={() => xoaHDCT(record)} type="primary">
                             Xóa
                         </Button>
@@ -381,7 +382,7 @@ const HoaDonChiTietPage = () => {
                         </Typography.Title>
                     }
                     extra={
-                        hoaDon?.trangThai < 4 && (
+                        hoaDon?.trangThai < 3 && (
                             <ModalSuaThongTin
                                 isLoad={isLoad}
                                 setIsLoad={setIsLoad}
@@ -414,7 +415,7 @@ const HoaDonChiTietPage = () => {
                 <Card
                     title={<Typography.Title level={4}>Sản phẩm</Typography.Title>}
                     extra={
-                        hoaDon?.trangThai < 4 && (
+                        hoaDon?.trangThai < 3 && (
                             <ModalThemHDCT isLoad={isLoad} setIsLoad={setIsLoad} hoaDon={hoaDon} />
                         )
                     }

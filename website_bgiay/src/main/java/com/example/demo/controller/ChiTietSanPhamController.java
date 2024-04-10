@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ChiTietSanPham;
 import com.example.demo.entity.HoaDonChiTiet;
+import com.example.demo.entity.TaiKhoan;
 import com.example.demo.repository.AnhRepository;
 import com.example.demo.repository.ChatLieuRepository;
 import com.example.demo.repository.ChiTietSanPhamRepository;
@@ -20,6 +21,11 @@ public class ChiTietSanPhamController {
 
     @Autowired
     private ChiTietSanPhamService service;
+
+    @GetMapping("/san-pham")
+    public ResponseEntity<?> getAllByIdSanPham(@RequestParam("id") Long idSanPham) {
+        return ResponseEntity.ok(service.getAllByIdSanPham(idSanPham));
+    }
 
     @GetMapping("")
     public ResponseEntity<?> getData(){
@@ -43,10 +49,18 @@ public class ChiTietSanPhamController {
 
     @PostMapping("/saveAll")
     public ResponseEntity<?> addDanhSach(@RequestBody List<ChiTietSanPham> chiTietSanPham) {
-        System.out.println(chiTietSanPham.size());
-        System.out.println(chiTietSanPham.size());
-        System.out.println(chiTietSanPham.size());
-        chiTietSanPham.stream().forEach(o-> System.out.println(o));
+
         return ResponseEntity.ok(service.addDanhSach(chiTietSanPham));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id
+            , @RequestBody ChiTietSanPham chiTietSanPham) {
+        if (!service.existsById(id)) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Không tìm thấy"
+            );
+        }
+        return ResponseEntity.ok(service.update(id, chiTietSanPham));
     }
 }

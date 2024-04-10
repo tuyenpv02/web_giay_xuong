@@ -3,8 +3,6 @@ import { formatPrice } from "../../../utils/formatNumber";
 
 const LichSuThanhToanHDCT = ({ lichSuThanhToan }) => {
 
-    
-
     const columnLichSuThanhToan = [
         {
             title: "loại thanh toán",

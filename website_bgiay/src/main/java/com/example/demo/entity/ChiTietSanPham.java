@@ -3,11 +3,13 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "chi_tiet_san_pham")
@@ -64,6 +66,10 @@ public class ChiTietSanPham {
     private Timestamp ngayCapNhat;
 
     private Integer trangThai;
+
+    @OneToMany(mappedBy = "chiTietSanPham")
+    @JsonManagedReference
+    private List<Anh> anhs;
 
 
 }

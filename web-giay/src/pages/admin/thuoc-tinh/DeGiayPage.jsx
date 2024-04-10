@@ -7,6 +7,7 @@ import getDateNow from "../../../utils/GetDateNow";
 import { toast } from "react-toastify";
 import { PlusOutlined } from "@ant-design/icons";
 import deGiaySlice from './../../../redux-toolkit/deGiaySlice';
+import { Typography } from 'antd';
 
 function DeGiayPage() {
     const ditpatch = useDispatch();
@@ -118,11 +119,13 @@ function DeGiayPage() {
         {
             title: "#Id",
             dataIndex: "id",
-            render: (text) => <a>{text}</a>,
+            width: 80,
+            render: (text, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Tên",
             dataIndex: "ten",
+            width: 200,
             render: (text) => <a>{text}</a>,
         },
         {
@@ -145,6 +148,7 @@ function DeGiayPage() {
         },
         {
             title: "Action",
+            width: 140,
             render: (_, record) => (
                 <>
                     <Space>
