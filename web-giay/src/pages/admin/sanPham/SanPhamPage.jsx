@@ -2,7 +2,7 @@ import React from 'react'
 
 function SanPhamPage() {
   return (
-    <div>SanPhamPage</div>
+    <div>SanPhamPage h</div>
   )
 }
 
