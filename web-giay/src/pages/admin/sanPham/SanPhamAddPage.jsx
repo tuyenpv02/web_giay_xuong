@@ -215,7 +215,7 @@ function SanPhamAddPage() {
 
     // lưu ảnh vào cloudinary và db
     const luuAnh = async (anhs, ctsps) => {
-        console.log("ảnh ", anhs, ctsps);
+        // console.log("ảnh ", anhs, ctsps);
         if (anhs != null) {
             let getUrls = async () => {
                 let resAnh = await upLoadFiles(anhs);
@@ -226,7 +226,7 @@ function SanPhamAddPage() {
                         url: img,
                         ngayTao: getDateNow(),
                     };
-                    console.log("anhData", anhData);
+                    // console.log("anhData", anhData);
                     AnhService.add(anhData)
                         .then((res) => {
                             // toast.success("thêm ảnh thành công");
@@ -548,9 +548,9 @@ function SanPhamAddPage() {
                         <Button type="primary" onClick={() => taoSanPhamChiTiet()}>
                             Thêm sản phẩm
                         </Button>
-                        <Button type="primary" onClick={() => ThemSanPham2()}>
+                        {/* <Button type="primary" onClick={() => ThemSanPham2()}>
                             Thêm log
-                        </Button>
+                        </Button> */}
                     </Flex>
                 </Card>
             </Space>

@@ -29,7 +29,7 @@ class HoaDonService {
             trangThai: trangThai,
         };
         console.log(hoaDon, data);
-        // console.log('data', data);
+        // console.log('data', data);zzz
         return request.put("hoa-don/" + id, data);
     }
 

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.FilterChiTietSP;
 import com.example.demo.entity.ChiTietSanPham;
 import com.example.demo.entity.HoaDonChiTiet;
 import com.example.demo.entity.TaiKhoan;
@@ -21,6 +22,12 @@ public class ChiTietSanPhamController {
 
     @Autowired
     private ChiTietSanPhamService service;
+
+    @PostMapping("/filter")
+    public ResponseEntity<?> filterCTSP(@RequestBody FilterChiTietSP filterChiTietSP) {
+        System.out.println(filterChiTietSP);
+        return ResponseEntity.ok(service.filter(filterChiTietSP));
+    }
 
     @GetMapping("/san-pham")
     public ResponseEntity<?> getAllByIdSanPham(@RequestParam("id") Long idSanPham) {

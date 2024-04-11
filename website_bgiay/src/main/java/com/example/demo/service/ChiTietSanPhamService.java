@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.FilterChiTietSP;
 import com.example.demo.entity.*;
 import com.example.demo.entity.ChiTietSanPham;
 import com.example.demo.repository.ChiTietSanPhamRepository;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,21 +26,54 @@ public class ChiTietSanPhamService {
     @Autowired
     private ChiTietSanPhamRepository repository;
 
-    public List<HoaDon> filter(String searchText, String trangThai
-            ) {
+    public List<HoaDon> filter(FilterChiTietSP filterChiTietSP) {
         Specification<ChiTietSanPham> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            Predicate likeTen = criteriaBuilder.like(root.get("ma"), "%" + searchText + "%");
-            Predicate likeNguoiTao = criteriaBuilder.like(root.get("hoTen"), "%" + searchText + "%");
-            Predicate likeEmail = criteriaBuilder.like(root.get("email"), "%" + searchText + "%");
-            Predicate likeSdt = criteriaBuilder.like(root.get("sdt"), "%" + searchText + "%");
-            predicates.add(criteriaBuilder.or(likeNguoiTao,likeTen,likeEmail,likeSdt));
+            Predicate likeMa = criteriaBuilder.like(root.get("ma"), "%" + filterChiTietSP.getSearchText() + "%");
+            Predicate likeTen = criteriaBuilder.like(root.get("ten"), "%" + filterChiTietSP.getSearchText() + "%");
+            predicates.add(criteriaBuilder.or(likeMa, likeTen));
 
-            if (trangThai.trim().length() != 0) {
-                Predicate specTrangThai = criteriaBuilder.equal(root.get("trangThai"), trangThai);
+            if (filterChiTietSP.getTrangThai() != null && !filterChiTietSP.getTrangThai().isEmpty()) {
+                Predicate specTrangThai = criteriaBuilder.equal(root.get("trangThai"), filterChiTietSP.getTrangThai());
                 predicates.add(specTrangThai);
             }
+
+//            if (filterChiTietSP.getChatLieu() != null && !filterChiTietSP.getChatLieu().isEmpty()) {
+//                Join<ChiTietSanPham, ChatLieu> chatLieuJoin = root.join("chatLieu", JoinType.INNER);
+//                Predicate chatLieuIdPredicate = criteriaBuilder.equal(chatLieuJoin.get("id"), filterChiTietSP.getChatLieu());
+//                predicates.add(chatLieuIdPredicate);
+//            }
+
+
+            if (filterChiTietSP.getChatLieu() != null && !filterChiTietSP.getChatLieu().isEmpty()) {
+                Join<ChiTietSanPham, MauSac> mauSacJoin = root.join("chatLieu", JoinType.INNER);
+                predicates.add(mauSacJoin.get("id").in(filterChiTietSP.getChatLieu()));
+            }
+
+            if (filterChiTietSP.getDeGiay() != null && !filterChiTietSP.getDeGiay().isEmpty()) {
+                Join<ChiTietSanPham, DeGiay> deGiayJoin = root.join("deGiay", JoinType.INNER);
+                predicates.add(criteriaBuilder.equal(deGiayJoin.get("id"), filterChiTietSP.getDeGiay()));
+            }
+
+            if (filterChiTietSP.getMauSac() != null && !filterChiTietSP.getMauSac().isEmpty()) {
+                Join<ChiTietSanPham, MauSac> mauSacJoin = root.join("mauSac", JoinType.INNER);
+                predicates.add(criteriaBuilder.equal(mauSacJoin.get("id"), filterChiTietSP.getMauSac()));
+            }
+
+            if (filterChiTietSP.getKichCo() != null && !filterChiTietSP.getKichCo().isEmpty()) {
+                Join<ChiTietSanPham, KichCo> kichCoJoin = root.join("kichCo", JoinType.INNER);
+                predicates.add(criteriaBuilder.equal(kichCoJoin.get("id"), filterChiTietSP.getKichCo()));
+            }
+
+            if (filterChiTietSP.getMinGia() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("giaBan"), filterChiTietSP.getMinGia()));
+            }
+
+            if (filterChiTietSP.getMaxGia() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("giaBan"), filterChiTietSP.getMaxGia()));
+            }
+
 
             // Sắp xếp theo id (ASC)
             query.orderBy(criteriaBuilder.desc(root.get("id")));
@@ -45,7 +81,6 @@ public class ChiTietSanPhamService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
         return repository.findAll(specification);
-//        return repository.filter(searchText, loaiHoaDon, trangThai, ngayBatDau, ngayKetThuc);
     }
 
     public List<ChiTietSanPham> getAllByIdSanPham(Long idSP) {
@@ -71,8 +106,8 @@ public class ChiTietSanPhamService {
     }
 
     public List<ChiTietSanPham> addDanhSach(List<ChiTietSanPham> chiTietSanPhams) {
-        chiTietSanPhams.stream().forEach(o-> System.out.println(o));
-       return repository.saveAll(chiTietSanPhams);
+        chiTietSanPhams.stream().forEach(o -> System.out.println(o));
+        return repository.saveAll(chiTietSanPhams);
     }
 
     public ChiTietSanPham update(Long id, ChiTietSanPham newChiTietSanPham) {

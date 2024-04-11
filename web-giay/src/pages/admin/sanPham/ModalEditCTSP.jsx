@@ -44,7 +44,7 @@ const ModalSuaThongTin = ({ load,setLoad,chiTietSP, deGiays, chatLieus, kichCos,
         form.setFieldValue("chatLieu",  chiTietSP.chatLieu.id);
         form.setFieldValue("moTa",  chiTietSP.moTa);
         form.setFieldValue("trangThai",  chiTietSP.trangThai);
-        console.log("ctsp ", chiTietSP);
+        // console.log("ctsp ", chiTietSP);
     }, []);
 
     // Open Modal thay đổi thông tin

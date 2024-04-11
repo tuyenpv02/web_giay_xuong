@@ -15,6 +15,7 @@ import {
     Table,
     Typography,
     Avatar,
+    Tooltip,
     Tag,
 } from "antd";
 import { FilterFilled } from "@ant-design/icons";
@@ -27,6 +28,11 @@ import ModalSuaThongTin from "./ModalEditCTSP";
 import { formatPrice } from "../../../utils/formatNumber";
 
 const SanPhamChiTietPage = () => {
+    const formatter = (value) => {
+        const formattedValue = value.toLocaleString("en-US");
+        return <span>{formattedValue} VND</span>;
+    };
+
     const params = useParams();
     const navigate = useNavigate();
     const [load, setLoad] = useState(false);
@@ -38,11 +44,15 @@ const SanPhamChiTietPage = () => {
         mauSac: "",
         kichCo: "",
         deGiay: "",
-        chatLieu: "",
-        minGia: "",
-        maxGia: "",
+        chatLieu: [],
+        minGia: 0,
+        maxGia: 5000000,
         trangThai: "",
     });
+
+    useEffect(() => {
+        let res = ChiTietSanPhamService.filter(filter);
+    }, [filter]);
 
     // load data
     // const [sanPhams, setSanPhams] = useState([]);
@@ -84,7 +94,7 @@ const SanPhamChiTietPage = () => {
     const columns = [
         {
             title: "#",
-            dataIndex: "ten",
+            // dataIndex: "ten",
             width: 50,
             render: (_, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
@@ -164,7 +174,7 @@ const SanPhamChiTietPage = () => {
 
     return (
         <>
-            <Button onClick={() => console.log(sanPhamChiTiet)}>log</Button>
+            {/* <Button onClick={() => console.log(sanPhamChiTiet)}>log</Button> */}
             <Space
                 direction="vertical"
                 size="middle"
@@ -201,11 +211,10 @@ const SanPhamChiTietPage = () => {
                             <Select
                                 className="w-100"
                                 placeholder="Kích cỡ"
-                                name="loaiHoaDon"
-                                value={filter.kichCo}
+                                // value={filter.kichCo}
                                 onChange={(e) => setFilter({ ...filter, kichCo: e })}
                             >
-                                <Select.Option value={""}>Tất cả</Select.Option>
+                                {/* <Select.Option value={""}>Tất cả</Select.Option> */}
                                 {kichCos?.map((de, index) => (
                                     <Select.Option key={index} value={de?.id}>
                                         {de?.ten}
@@ -218,12 +227,10 @@ const SanPhamChiTietPage = () => {
                             <Select
                                 className="w-100"
                                 placeholder="Màu sắc"
-                                name="loaiHoaDon"
-                                value={filter.mauSac}
+                                // value={filter.mauSac}
                                 onChange={(e) => setFilter({ ...filter, mauSac: e })}
                             >
-                                {" "}
-                                <Select.Option value={""}>Tất cả</Select.Option>
+                                {/* <Select.Option value={""}>Tất cả</Select.Option> */}
                                 {mauSacs?.map((sp, index) => (
                                     <Select.Option key={index} value={sp?.id}>
                                         {sp?.ten}
@@ -235,13 +242,11 @@ const SanPhamChiTietPage = () => {
                             <label className="form-label me-1 ">Đế giày: </label>
                             <Select
                                 className="w-100"
-                                placeholder="Màu sắc"
-                                name="mauSac"
-                                value={filter.deGiay}
+                                placeholder="Đế giày"
+                                // value={filter.deGiay}
                                 onChange={(e) => setFilter({ ...filter, deGiay: e })}
                             >
-                                {" "}
-                                <Select.Option value={""}>Tất cả</Select.Option>
+                                {/* <Select.Option value={""}>Tất cả</Select.Option> */}
                                 {deGiays?.map((sp, index) => (
                                     <Select.Option key={index} value={sp?.id}>
                                         {sp?.ten}
@@ -253,13 +258,12 @@ const SanPhamChiTietPage = () => {
                             <label className="form-label me-1 ">Chất liệu : </label>
                             <Select
                                 className="w-100"
-                                placeholder="Màu sắc"
-                                name="mauSac"
-                                value={filter.chatLieu}
+                                placeholder="Chất liệu"
+                                defaultValue={filter.chatLieu}
+                                mode="multiple"
                                 onChange={(e) => setFilter({ ...filter, chatLieu: e })}
                             >
-                                {" "}
-                                <Select.Option value={""}>Tất cả</Select.Option>
+                                {/* <Select.Option value={""}>Tất cả</Select.Option> */}
                                 {chatLieus?.map((sp, index) => (
                                     <Select.Option key={index} value={sp?.id}>
                                         {sp?.ten}
@@ -273,7 +277,7 @@ const SanPhamChiTietPage = () => {
                                 className="w-100"
                                 placeholder="Trạng thái"
                                 name="trangThai"
-                                value={filter.trangThai}
+                                // value={filter.trangThai}
                                 onChange={(e) => setFilter({ ...filter, trangThai: e })}
                             >
                                 <Select.Option value={""}>Tất cả</Select.Option>
@@ -281,29 +285,35 @@ const SanPhamChiTietPage = () => {
                                 <Select.Option value={"0"}>Dừng</Select.Option>
                             </Select>
                         </Col>
-                        <Col span={6}>
+                        <Col span={18}>
                             <label className="form-label me-1 ">Khoảng giá : </label>
                             <Slider
+                                max={10000000}
                                 range
-                                step={10}
-                                defaultValue={[20, 50]}
-                                onChange={(e) => console.log(e)}
-                                //   onChangeComplete={onChangeComplete}
+                                step={100000}
+                                tipFormatter={formatter}
+                                value={[filter?.minGia, filter?.maxGia]}
+                                onChange={(e) => {
+                                    setFilter({ ...filter, minGia: e[0], maxGia: e[1] });
+                                }}
                             />
                         </Col>
                         <Col span={24}>
                             <Space className="d-flex align-items-center  justify-content-center  ">
                                 <Button
                                     type="primary"
-                                    // onClick={() => {
-                                    //     setFilter({
-                                    //         searchText: "",
-                                    //         ngayBatDau: "",
-                                    //         ngayKetThuc: "",
-                                    //         loaiHoaDon: "",
-                                    //         trangThai: "",
-                                    //     });
-                                    // }}
+                                    onClick={() => {
+                                        setFilter({
+                                            searchText: "",
+                                            trangThai: "",
+                                            chatLieu: "",
+                                            deGiay: "",
+                                            mauSac: "",
+                                            kichCo: "",
+                                            minGia: 0,
+                                            maxGia: 10000000,
+                                        });
+                                    }}
                                 >
                                     Làm mới
                                 </Button>
@@ -316,7 +326,7 @@ const SanPhamChiTietPage = () => {
                     <Table
                         columns={columns}
                         dataSource={sanPhamChiTiet}
-                        key={"key"}
+                        key={"id"}
                         pagination={{ pageSize: 10 }}
                         bordered
                     />
