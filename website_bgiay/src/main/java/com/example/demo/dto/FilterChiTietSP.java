@@ -14,7 +14,7 @@ public class FilterChiTietSP {
     private String mauSac;
     private String kichCo;
     private String deGiay;
-    private List<String> chatLieu;
+    private String chatLieu;
     private Double minGia;
     private Double maxGia;
     private String trangThai;

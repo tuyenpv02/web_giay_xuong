@@ -34,7 +34,7 @@ const ModalThemSP = ({ disabledThongTin, load, setLoad }) => {
     };
 
     const themSanPham = async () => {
-        console.log(sanPham);
+        // console.log(sanPham);
         const data = {
             ten: sanPham.ten,
             thuongHieu: sanPham.thuongHieu,

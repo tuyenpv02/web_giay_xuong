@@ -58,7 +58,7 @@ const ModalSuaThongTin = ({ load,setLoad,chiTietSP, deGiays, chatLieus, kichCos,
     };
 
     const submitForm = (values) => {
-        console.log(values);
+        // console.log(values);
         const data = {
             ...values,
             trangThai:values.trangThai?1:0,

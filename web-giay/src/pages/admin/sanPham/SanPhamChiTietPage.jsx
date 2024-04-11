@@ -44,7 +44,7 @@ const SanPhamChiTietPage = () => {
         mauSac: "",
         kichCo: "",
         deGiay: "",
-        chatLieu: [],
+        chatLieu: "",
         minGia: 0,
         maxGia: 5000000,
         trangThai: "",
@@ -103,7 +103,15 @@ const SanPhamChiTietPage = () => {
             dataIndex: "ten",
             render: (text, record) => (
                 <>
-                    {/* <Avatar size={64} shape="square" src={record?.anhs[0]?.url} /> */}
+                    <Avatar size={64} shape="square" src={record?.anhs[0]?.url} />
+                </>
+            ),
+        },
+        {
+            title: "Tên",
+            dataIndex: "ten",
+            render: (text, record) => (
+                <>
                     <Typography.Text>{text}</Typography.Text>
                 </>
             ),
@@ -259,7 +267,7 @@ const SanPhamChiTietPage = () => {
                             <Select
                                 className="w-100"
                                 placeholder="Chất liệu"
-                                defaultValue={filter.chatLieu}
+                                // defaultValue={filter.chatLieu}
                                 mode="multiple"
                                 onChange={(e) => setFilter({ ...filter, chatLieu: e })}
                             >

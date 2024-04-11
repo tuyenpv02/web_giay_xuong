@@ -39,17 +39,17 @@ public class ChiTietSanPhamService {
                 predicates.add(specTrangThai);
             }
 
-//            if (filterChiTietSP.getChatLieu() != null && !filterChiTietSP.getChatLieu().isEmpty()) {
-//                Join<ChiTietSanPham, ChatLieu> chatLieuJoin = root.join("chatLieu", JoinType.INNER);
-//                Predicate chatLieuIdPredicate = criteriaBuilder.equal(chatLieuJoin.get("id"), filterChiTietSP.getChatLieu());
-//                predicates.add(chatLieuIdPredicate);
-//            }
-
-
             if (filterChiTietSP.getChatLieu() != null && !filterChiTietSP.getChatLieu().isEmpty()) {
-                Join<ChiTietSanPham, MauSac> mauSacJoin = root.join("chatLieu", JoinType.INNER);
-                predicates.add(mauSacJoin.get("id").in(filterChiTietSP.getChatLieu()));
+                Join<ChiTietSanPham, ChatLieu> chatLieuJoin = root.join("chatLieu", JoinType.INNER);
+                Predicate chatLieuIdPredicate = criteriaBuilder.equal(chatLieuJoin.get("id"), filterChiTietSP.getChatLieu());
+                predicates.add(chatLieuIdPredicate);
             }
+
+
+//            if (filterChiTietSP.getChatLieu() != null && !filterChiTietSP.getChatLieu().isEmpty()) {
+//                Join<ChiTietSanPham, MauSac> mauSacJoin = root.join("chatLieu", JoinType.INNER);
+//                predicates.add(mauSacJoin.get("id").in(filterChiTietSP.getChatLieu()));
+//            }
 
             if (filterChiTietSP.getDeGiay() != null && !filterChiTietSP.getDeGiay().isEmpty()) {
                 Join<ChiTietSanPham, DeGiay> deGiayJoin = root.join("deGiay", JoinType.INNER);

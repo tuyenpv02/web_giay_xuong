@@ -40,7 +40,7 @@ class ChiTietSanPhamService {
     static filter = async (filter) => {
         const data = {
             searchText: filter?.searchText,
-            chatLieu: filter?.chatLieu ? filter?.chatLieu : [],
+            chatLieu: filter?.chatLieu,
             deGiay: filter?.deGiay,
             kichCo: filter?.kichCo,
             mauSac: filter?.mauSac,
@@ -48,9 +48,9 @@ class ChiTietSanPhamService {
             minGia: filter?.minGia,
             trangThai: filter?.trangThai,
         };
-        console.log("fi ", data);
+        // console.log("fi ", data);
         let res = await request.post(`http://localhost:8080/chi-tiet-san-pham/filter`, data);
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
     };
 }

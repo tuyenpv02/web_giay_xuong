@@ -256,12 +256,13 @@ function SanPhamAddPage() {
         {
             title: "Sản phẩm",
             dataIndex: "ten",
+            width: 350,
             render: (text) => <Typography.Text>{text}</Typography.Text>,
         },
         {
             title: "Số lượng",
             dataIndex: "soLuong",
-            width: 150,
+            width: 100,
             render: (text, record, index) => (
                 <InputNumber
                     style={{ width: "100%" }}
@@ -280,6 +281,8 @@ function SanPhamAddPage() {
                     <InputNumber
                         style={{ width: "100%" }}
                         min={0}
+                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        addonBefore="VND"
                         defaultValue={record?.giaBan}
                         onChange={(e) => updateGiaBan(record, index, e)}
                     />
@@ -297,16 +300,16 @@ function SanPhamAddPage() {
                 </>
             ),
         },
-        {
-            title: "Ảnh",
-            render: (_, record, index) => (
-                <>
-                    <Button type="text" onClick={() => console.log("chưa ")}>
-                        Thêm
-                    </Button>
-                </>
-            ),
-        },
+        // {
+        //     title: "Ảnh",
+        //     render: (_, record, index) => (
+        //         <>
+        //             <Button type="text" onClick={() => console.log("chưa ")}>
+        //                 Thêm
+        //             </Button>
+        //         </>
+        //     ),
+        // },
     ];
     return (
         <>
