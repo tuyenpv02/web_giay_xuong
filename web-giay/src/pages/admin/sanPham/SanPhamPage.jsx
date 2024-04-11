@@ -5,7 +5,7 @@ import SanPhamService from "../../../services/SanPhamService";
 import { EditOutlined, SearchOutlined } from "@ant-design/icons";
 import ModalSuaThemSP from "./ModalSuaSanPham";
 
-function SanPhamPage() {
+function SanPhamPage() { 
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [load, setLoad] = useState(false);
