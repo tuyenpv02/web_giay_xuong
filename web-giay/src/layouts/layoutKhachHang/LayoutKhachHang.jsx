@@ -13,7 +13,6 @@ function LayoutKhachHang() {
     return (
         <>
             <Layout >
-               
             </Layout>
         </>
     );
