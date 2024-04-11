@@ -54,12 +54,8 @@ public class AnhService {
             return o;
         }).orElse(null);
     }
-
     public Boolean existsById(Long id) {
         return repository.existsById(id);
-    }
-    public Boolean existsByMa(String ten) {
-        return repository.findByTen(ten).size()>0;
     }
 
     public Anh findById(Long id) {

@@ -29,7 +29,7 @@ function formatTrangThaiHD(value) {
             trangThai = value;
     }
 
-    return trangThai;
+    return capitalizeFirstLetter(trangThai);
 }
 
 function formatTrangThaiLSHD(value) {
@@ -65,11 +65,19 @@ function formatTrangThaiLSHD(value) {
         case 9:
             trangThai = "chỉnh sửa hóa đơn";
             break;
+        case 10:
+            trangThai = "Xác nhận thanh toán";
+            break;
         default:
             trangThai = value;
     }
 
-    return trangThai;
+    return capitalizeFirstLetter(trangThai);
 }
+
+function capitalizeFirstLetter(word) {
+    return word;
+    // return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 
 export { formatTrangThaiHD, formatTrangThaiLSHD };

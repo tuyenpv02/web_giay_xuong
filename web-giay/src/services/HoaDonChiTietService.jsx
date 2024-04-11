@@ -18,13 +18,12 @@ class HoaDonChiTietService {
 
     // add
     static add(data) {
-        console.log(data);
-        // return request.post("hoa-don-chi-tiet", data);
+        return request.post("hoa-don-chi-tiet", data);
     }
 
     // add
     static update(id, data) {
-        console.log(id, data);
+        console.log('id ',id, data);
         return request.put("hoa-don-chi-tiet/" + id, data);
     }
 }

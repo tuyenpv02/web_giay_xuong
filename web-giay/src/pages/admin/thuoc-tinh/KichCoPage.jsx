@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Space, Switch, Table, Tag } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Space, Switch, Table, Tag,Typography } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import KichCoService from "../../../services/KichCoService";
@@ -117,11 +117,13 @@ function KichCoPage() {
         {
             title: "#Id",
             dataIndex: "id",
-            render: (text) => <a>{text}</a>,
+            width: 80,
+            render: (text, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Tên",
             dataIndex: "ten",
+            // width: 400,
             render: (text) => <a>{text}</a>,
         },
         {
@@ -144,6 +146,7 @@ function KichCoPage() {
         },
         {
             title: "Action",
+            width: 120,
             render: (_, record) => (
                 <>
                     <Space>

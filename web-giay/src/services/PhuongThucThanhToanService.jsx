@@ -2,9 +2,8 @@
 import request from "./Request";
 
 class PhuongThucThanhToanService {
-     
     static getAllByHD = async (idHoaDon) => {
-        let res = await request.get(`phuong-thuc-thanh-toan`,{
+        let res = await request.get(`phuong-thuc-thanh-toan`, {
             params: {
                 idHoaDon,
             },

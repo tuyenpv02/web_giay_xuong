@@ -51,7 +51,8 @@ function HoaDonPage() {
         {
             title: "#",
             dataIndex: "ma",
-            render: (_, record, index) => <a>{index + 1}</a>,
+            width: 80,
+            render: (_, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Mã",
@@ -102,6 +103,7 @@ function HoaDonPage() {
         },
         {
             title: "Action",
+            
             render: (_, record) => (
                 <>
                     <Button
@@ -227,14 +229,14 @@ function HoaDonPage() {
                                 >
                                     Làm mới
                                 </Button>
-                                <Button
+                                {/* <Button
                                     type="primary"
                                     onClick={() => {
                                         alert("chưa");
                                     }}
                                 >
                                     Xuất excel
-                                </Button>
+                                </Button> */}
                             </Space>
                         </Col>
                     </Row>

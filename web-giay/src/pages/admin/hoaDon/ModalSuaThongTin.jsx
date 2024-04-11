@@ -6,7 +6,6 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import HoaDonService from "../../../services/HoaDonService";
 import getDateNow from "../../../utils/GetDateNow";
-import { TachDiaChiVN } from "../../../utils/TachDiaChiVN";
 import LichSuHoaDonService from "../../../services/LichSuHoaDonService";
 
 const phoneRegExp = /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7,8}$/;
@@ -125,17 +124,18 @@ const ModalSuaThongTin = ({ isLoad, setIsLoad, hoaDon }) => {
             thanhPho.province_name;
 
         const data = { ...hoaDon, diaChi: address, hoTen: values.hoTen, sdt: values.sdt };
+        const lsHD = {...lichSuHD, hoaDon:{id:hoaDon?.id} };
 
         HoaDonService.updateHoaDon(hoaDon?.id, data)
             .then((res) => {
-                LichSuHoaDonService.add(lichSuHD, hoaDon.id);
+                LichSuHoaDonService.add(lsHD);
+                setIsLoad(!isLoad);
                 toast.success("Cập nhật thành công");
             })
             .catch((err) => {
                 toast.error("Cập nhật thất bại " + err);
             });
         handleCancelModalSuaThongTin();
-        setIsLoad(!isLoad);
     };
 
     //

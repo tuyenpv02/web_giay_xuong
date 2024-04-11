@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,7 @@ public class Anh {
 
     @ManyToOne
     @JoinColumn(name = "idChiTietSP", referencedColumnName = "id")
+    @JsonBackReference
     private ChiTietSanPham chiTietSanPham;
     
     private String ten;

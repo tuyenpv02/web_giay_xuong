@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface AnhRepository extends JpaRepository<Anh, Long>
   {
+    List<Anh> findByTen(String ten);
 
-    List<ChatLieu> findByTen(String ten);
-}
+  }

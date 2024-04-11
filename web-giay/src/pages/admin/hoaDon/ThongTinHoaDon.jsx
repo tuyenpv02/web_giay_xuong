@@ -2,9 +2,8 @@
 import { Col, Row, Tag, Typography } from "antd";
 import { formatPrice } from "../../../utils/formatNumber";
 import { formatTrangThaiHD } from "../../../utils/formatTrangThaiHD";
-import { TachDiaChiVN } from "../../../utils/TachDiaChiVN";
 
-const ThongTinHDCT = ({ hoaDon }) => {
+const ThongTinHoaDon = ({ hoaDon }) => {
     return (
         <>
             <Row gutter={[10, 10]}>
@@ -105,4 +104,4 @@ const ThongTinHDCT = ({ hoaDon }) => {
     );
 };
 
-export default ThongTinHDCT;
+export default ThongTinHoaDon;

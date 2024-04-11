@@ -1,11 +1,11 @@
-import { Button, Col, Form, Input, Modal, Row, Space, Switch, Table, Tag } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import { Button, Col, Form, Input, Modal, Row, Space, Switch, Table, Tag, Typography } from "antd";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import ThuongHieuService from "../../../services/ThuongHieuService";
 import { useDispatch } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
 import getDateNow from "../../../utils/GetDateNow";
-import thuongHieuSlice from './../../../redux-toolkit/thuongHieuSlice';
+import thuongHieuSlice from "./../../../redux-toolkit/thuongHieuSlice";
 
 function ThuongHieuPage() {
     const ditpatch = useDispatch();
@@ -105,36 +105,36 @@ function ThuongHieuPage() {
             });
     };
     const handleSearch = (event) => {
-      ThuongHieuService.search(event.target.value.trim())
-      .then((res) => {
-          // console.log(res);
-          setDataSource([...res.data]);
-      })
-      .catch((error) => {});
+        ThuongHieuService.search(event.target.value.trim())
+            .then((res) => {
+                // console.log(res);
+                setDataSource([...res.data]);
+            })
+            .catch((error) => {});
     };
 
     const columns = [
         {
             title: "#Id",
             dataIndex: "id",
-            render: (text) => <a>{text}</a>, responsive: ['md'],
+            width: 80,
+            render: (text, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Tên",
             dataIndex: "ten",
-            render: (text) => <a>{text}</a>, responsive: ['md'],
+            width: 200,
+            render: (text) => <a>{text}</a>,
         },
         {
             title: "Ngày tạo",
             dataIndex: "ngayTao",
             render: (text) => <a>{text}</a>,
-            responsive: ['md'],
         },
         {
             title: "Người tạo",
             dataIndex: "nguoiTao",
             render: (text) => <a>{text ? text : "system"}</a>,
-            responsive: ['md'],
         },
         {
             title: "Trạng Thái",
@@ -142,10 +142,11 @@ function ThuongHieuPage() {
             render: (trangThai, record) => {
                 const color = trangThai ? "green" : "blue";
                 return <Tag color={color}>{trangThai ? "hoạt động" : "tạm ngưng"}</Tag>;
-            }, responsive: ['md'],
+            },
         },
         {
             title: "Action",
+            width: 120,
             render: (_, record) => (
                 <>
                     <Space>
@@ -153,7 +154,7 @@ function ThuongHieuPage() {
                         <Button onClick={() => handleDelete(record)}>Xóa</Button>
                     </Space>
                 </>
-            ), responsive: ['md'],
+            ),
         },
     ];
 

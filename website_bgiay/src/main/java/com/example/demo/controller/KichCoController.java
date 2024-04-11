@@ -20,7 +20,6 @@ public class KichCoController {
     @GetMapping("search")
     public ResponseEntity<?> getAll(
             @RequestParam("seachText") String seachText
-
     ) {
         return ResponseEntity.ok(service.search(seachText));
     }

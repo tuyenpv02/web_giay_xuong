@@ -28,7 +28,7 @@ public class TaiKhoanController {
         return ResponseEntity.ok(service.getAllNhanVien());
     }
 
-    @GetMapping("/khach-hangn")
+    @GetMapping("/khach-hang")
     public ResponseEntity<?> getAllKhachHang() {
         return ResponseEntity.ok(service.getAllKhachHang());
     }

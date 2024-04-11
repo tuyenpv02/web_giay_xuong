@@ -28,17 +28,18 @@ class HoaDonService {
             ...hoaDon,
             trangThai: trangThai,
         };
+        console.log(hoaDon, data);
         // console.log('data', data);
         return request.put("hoa-don/" + id, data);
     }
 
     // update
     static updateHoaDon(id, hoaDon) {
-        const data = {
-            ...hoaDon,
-        };
-        // console.log('data', data, id);
-        return request.put("hoa-don/" + id, data);
+        // const data = {
+        //     ...hoaDon,
+        // };
+        console.log('data', hoaDon, id);
+        return request.put("hoa-don/" + id, hoaDon);
     }
 
     // detail by id

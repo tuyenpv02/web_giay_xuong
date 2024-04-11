@@ -8,7 +8,7 @@ const StepHoaDonChiTiet = ({ lichSuHoaDon }) => {
             <Steps labelPlacement="vertical" style={{ overflowY: "auto" }}>
                 {lichSuHoaDon?.map((step) => {
                     return (
-                        step.hanhDong == 1 && (
+                        step.hanhDong != 2 && (
                             <Step
                                 style={{ maxWidth: "200px" }}
                                 icon={

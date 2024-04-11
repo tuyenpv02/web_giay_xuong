@@ -2,6 +2,7 @@ import { Table, Tag, Typography } from "antd";
 import { formatPrice } from "../../../utils/formatNumber";
 
 const LichSuThanhToanHDCT = ({ lichSuThanhToan }) => {
+
     const columnLichSuThanhToan = [
         {
             title: "loại thanh toán",
@@ -28,6 +29,7 @@ const LichSuThanhToanHDCT = ({ lichSuThanhToan }) => {
             render: (text, record) => <a>{text}</a>,
         },
     ];
+    
     return (
         <>
             <Table

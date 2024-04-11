@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.ChiTietSanPham;
+import com.example.demo.entity.HoaDon;
 import com.example.demo.entity.SanPham;
 import com.example.demo.entity.ThuongHieu;
 import com.example.demo.repository.SanPhamRepository;
@@ -8,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,12 +23,30 @@ public class SanPhamService {
     @Autowired
     private SanPhamRepository repository;
 
+    public List<SanPham> filter(String searchText, String trangThai ) {
+        Specification<SanPham> specification = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            Predicate likeTen = criteriaBuilder.like(root.get("ten"), "%" + searchText + "%");
+            Predicate likeNguoiTao = criteriaBuilder.like(root.get("nguoiTao"), "%" + searchText + "%");
+            predicates.add(criteriaBuilder.or(likeNguoiTao, likeTen));
+            if (trangThai.trim().length() != 0) {
+                Predicate specTrangThai = criteriaBuilder.equal(root.get("trangThai"), trangThai);
+                predicates.add(specTrangThai);
+            }
+            // Sắp xếp theo id (ASC)
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+        return repository.findAll(specification);
+    }
 
     public List<SanPham> search(String text) {
         Specification<SanPham> specification = (root, query, criteriaBuilder) -> {
-            Predicate likeTen = criteriaBuilder.like(root.get("ten"),"%"+text+"%");
-            Predicate likeNguoiTao = criteriaBuilder.like(root.get("nguoiTao"),"%"+text+"%");
-            return  criteriaBuilder.or(likeTen,likeNguoiTao);
+            Predicate likeTen = criteriaBuilder.like(root.get("ten"), "%" + text + "%");
+            Predicate likeNguoiTao = criteriaBuilder.like(root.get("nguoiTao"), "%" + text + "%");
+            return criteriaBuilder.or(likeTen, likeNguoiTao);
         };
         return repository.findAll(specification);
     }
@@ -47,7 +72,7 @@ public class SanPhamService {
         }).orElse(null);
     }
 
-    public SanPham updateTrangThai(Long id){
+    public SanPham updateTrangThai(Long id) {
         Optional<SanPham> optional = repository.findById(id);
         return optional.map(o -> {
             //
@@ -68,8 +93,9 @@ public class SanPhamService {
     public Boolean existsById(Long id) {
         return repository.existsById(id);
     }
+
     public Boolean existsByTen(String ten) {
-        return repository.findByTen(ten).size()>0;
+        return repository.findByTen(ten).size() > 0;
     }
 
     public SanPham findById(Long id) {

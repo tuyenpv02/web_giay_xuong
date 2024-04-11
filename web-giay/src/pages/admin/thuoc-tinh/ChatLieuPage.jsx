@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatLieuService from "../../../services/ChatLieuService";
 import { useDispatch } from "react-redux";
-import { Button, Col, Form, Input, Modal, Row, Space, Switch, Table, Tag } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Space, Switch, Table, Tag, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import getDateNow from "../../../utils/GetDateNow";
-import chatLieuSlice from './../../../redux-toolkit/chatLieuSlice';
+import chatLieuSlice from "./../../../redux-toolkit/chatLieuSlice";
 
 function ChatLieuPage() {
     const ditpatch = useDispatch();
@@ -117,11 +117,13 @@ function ChatLieuPage() {
         {
             title: "#Id",
             dataIndex: "id",
-            render: (text) => <a>{text}</a>,
+            width: 80,
+            render: (text, record, index) => <Typography.Text strong>{index + 1}</Typography.Text>,
         },
         {
             title: "Tên",
             dataIndex: "ten",
+            // width: 400,
             render: (text) => <a>{text}</a>,
         },
         {
@@ -144,6 +146,7 @@ function ChatLieuPage() {
         },
         {
             title: "Action",
+            width: 140,
             render: (_, record) => (
                 <>
                     <Space>
